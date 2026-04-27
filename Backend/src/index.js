@@ -40,11 +40,13 @@ app.use(limiter)
 app.use(express.json());
 
 // routing
-app.use("/auth", authRouter);
+const apiRouter = express.Router();
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/user", userRouter);
+apiRouter.use("/message", messageRouter);
 
-app.use("/user", userRouter);
-
-app.use("/message", messageRouter);
+app.use("/api", apiRouter); // For Vercel production
+app.use("/", apiRouter);    // For local development and fallback
 
 // global error handler
 app.use((err , req , res , next)=>{

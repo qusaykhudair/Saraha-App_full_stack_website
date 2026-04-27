@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,7 +39,7 @@ api.interceptors.response.use(
         if (!refreshToken) throw new Error('No refresh token');
 
         // Request new access token using refresh token directly with standard axios
-        const res = await axios.get('http://localhost:3000/auth/refresh-token', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || '/api'}/auth/refresh-token`, {
           headers: {
             'authorization': `Bearer ${refreshToken}`
           }
