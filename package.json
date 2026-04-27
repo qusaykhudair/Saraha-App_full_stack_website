@@ -2,7 +2,7 @@
   "name": "saraha-app-monorepo",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd Frontend && npm install && npm run build",
+    "build": "cd Frontend && npm install && npm run build && cd .. && mkdir -p public && cp -r Frontend/dist/* public/",
     "install": "cd Frontend && npm install && cd ../Backend && npm install"
   }
 }
