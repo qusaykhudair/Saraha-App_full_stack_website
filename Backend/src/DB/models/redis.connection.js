@@ -5,7 +5,7 @@ export const redisClient = createClient(
     {
         // put your Redis configuration here if needed, for example:
 
-        url: process.env.REDIS_URL || "redis://localhost:6379",
+        url: "rediss://default:gQAAAAAAAaR7AAIgcDJkMWIyYTA2NjEyNGU0MzUxYmJkNmUzN2ZjYmUxOGU5Yw@wise-titmouse-107643.upstash.io:6379",
     }
 );
 // Connect to Redis
