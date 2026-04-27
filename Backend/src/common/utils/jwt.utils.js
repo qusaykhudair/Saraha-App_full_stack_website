@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 export function generateTokens(payload){
-const accessToken = jwt.sign(payload, "djdjjdsjajajajajajquiuwququququ", {
-  expiresIn: 60*60*24*7, // 1 week
-});
-const refreshToken = jwt.sign(payload, "djdjjdsjajajajajajquiuwququququ", {
-  expiresIn: 60*60*24*7, // 1 week
-});
+  const secret = process.env.JWT_SECRET || "default_jwt_secret_key";
+  const accessToken = jwt.sign(payload, secret, {
+    expiresIn: "7d",
+  });
+  const refreshToken = jwt.sign(payload, secret, {
+    expiresIn: "7d",
+  });
 
-return { accessToken, refreshToken };
+  return { accessToken, refreshToken };
 }

@@ -15,7 +15,7 @@ import Dashboard from './pages/Dashboard';
 import PublicProfile from './pages/PublicProfile';
 import Footer from './components/Footer';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com';
 
 function App() {
   return (

@@ -135,7 +135,10 @@ export const logout = async (tokenPayload, user, tokenString) => {
 };
  // This function should verify the Google token and return the user information
  async function verifyGoogleToken(googleToken) {
-  const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+  const CLIENT_ID = process.env.GOOGLE_CLIENT_ID|| "830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com";
+  if (!CLIENT_ID) {
+    throw new Error("GOOGLE_CLIENT_ID environment variable is missing");
+  }
   const client = new OAuth2Client(CLIENT_ID);
   const ticket = await client.verifyIdToken({
     idToken: googleToken,
@@ -173,9 +176,10 @@ return generateTokens({ sub: newUser._id, role: newUser.role , provider: newUser
 
 export const refreshTokenService= async(authorization)=>{
   // check token valid
+  const secret = process.env.JWT_SECRET || "default_jwt_secret_key";
   const payload = jwt.verify(
     authorization,
-    "djdjjdsjajajajajajquiuwququququ"
+    secret
   ); // valid - expire
 const cashedRefreshToken = await redisClient.get(`refreshToken : ${payload.sub}`)
 if (cashedRefreshToken != authorization){
