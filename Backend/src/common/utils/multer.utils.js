@@ -1,5 +1,7 @@
 import multer, { diskStorage } from "multer";
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { BadRequestException } from "./error.utils.js";
 export const fileUpload = () => {
   return multer({
@@ -19,10 +21,14 @@ limits: {
       },
     storage: diskStorage({
       destination: (req, file, cb) => {
-        const folder = req.user ? `uploads/${req.user._id}` : `uploads/${req.params.receiverId}/messages`;
-        // create folder with user id to save his images
+        const tmpDir = os.tmpdir();
+        const baseFolder = path.join(tmpDir, 'uploads');
+        const folder = req.user 
+          ? path.join(baseFolder, req.user._id.toString()) 
+          : path.join(baseFolder, (req.params.receiverId || 'guest').toString(), 'messages');
+          
         if (!fs.existsSync(folder)) {
-          fs.mkdirSync(folder , { recursive: true });
+          fs.mkdirSync(folder, { recursive: true });
         }
         cb(null, folder);
       }, // string or function >> "uploads" >> 

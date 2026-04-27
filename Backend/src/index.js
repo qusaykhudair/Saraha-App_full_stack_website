@@ -2,6 +2,8 @@ import 'dotenv/config';
 import cors from "cors";
 import express from "express"
 import helmet from "helmet";
+import os from "node:os";
+import path from "node:path";
 import { connectDB } from "./DB/connection.js";
 import {authRouter, messageRouter, userRouter} from "./modules/index.js";
 
@@ -24,7 +26,7 @@ connectRedis();
 // In development, you might want to allow requests from any origin, which can be done using the following code:
 app.use(cors("*"));
 // access uploads folder statically by middleware to access images from browser
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(os.tmpdir(), "uploads")));
 app.use(helmet())
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
