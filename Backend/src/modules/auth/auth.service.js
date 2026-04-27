@@ -135,9 +135,10 @@ export const logout = async (tokenPayload, user, tokenString) => {
 };
  // This function should verify the Google token and return the user information
  async function verifyGoogleToken(googleToken) {
-  const CLIENT_ID = process.env.GOOGLE_CLIENT_ID|| "830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com";
-  if (!CLIENT_ID) {
-    throw new Error("GOOGLE_CLIENT_ID environment variable is missing");
+  const CLIENT_ID = (process.env.GOOGLE_CLIENT_ID || "830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com").trim();
+  console.log("Verifying token with Client ID:", CLIENT_ID);
+  if (!CLIENT_ID || CLIENT_ID.includes("YOUR_GOOGLE")) {
+    throw new Error("GOOGLE_CLIENT_ID is invalid or missing");
   }
   const client = new OAuth2Client(CLIENT_ID);
   const ticket = await client.verifyIdToken({
