@@ -25,7 +25,7 @@ const createdUser = await singup(req.body);
       // Proceed with signup logic
     })
                   
-router.post("/login",fileUpload().none(), isValid(loginSchema) , async (req, res, next) => {
+router.post("/login", isValid(loginSchema) , async (req, res, next) => {
 
   const { accessToken, refreshToken } = await login(req.body);
   // send response

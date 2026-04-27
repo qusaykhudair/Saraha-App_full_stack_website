@@ -16,30 +16,23 @@ const port = process.env.PORT || 3000;
 connectDB();
 // Connect to Redis
 connectRedis();
-// IF you want to allow requests from a specific origin, you can use the following code:
-// app.use(cors({
-//   origin: 'http://example.com', // Replace with your allowed origin
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-//   allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
-// }));
 
-// In development, you might want to allow requests from any origin, which can be done using the following code:
-app.use(cors("*"));
-// access uploads folder statically by middleware to access images from browser
-app.use("/uploads", express.static(path.join(os.tmpdir(), "uploads")));
-app.use(helmet())
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 50, // Limit each IP to 50 requests per `window` (here, per 15 minutes).
-     statusCode : 500 , 
-     legacyHeaders : false,
-})
-
-// Apply the rate limiting middleware to all requests.
-app.use(limiter)
-
-// paresing data from req 
+// 1. Core Middlewares (Must be at the TOP for Vercel)
+app.use(cors()); // Enable CORS for all origins
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// 2. Security Middlewares
+app.use(helmet({
+    crossOriginResourcePolicy: false, // Allow loading images from other origins
+}))
+
+// 3. Static Files
+app.use("/uploads", express.static(path.join(os.tmpdir(), "uploads")));
+
+// 4. Rate Limiting (Disabled or relaxed for Serverless Vercel)
+// const limiter = rateLimit({ ... })
+// app.use(limiter)
 
 // routing
 const apiRouter = express.Router();

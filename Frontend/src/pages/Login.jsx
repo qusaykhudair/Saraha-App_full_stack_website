@@ -24,13 +24,9 @@ const Login = () => {
     setLoading(true);
     
     try {
-      // Backend expects FormData for login because of fileUpload().none()
-      const data = new FormData();
-      data.append('email', formData.email);
-      data.append('password', formData.password);
-
-      const res = await api.post('/auth/login', data, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      const res = await api.post('/auth/login', {
+        email: formData.email,
+        password: formData.password
       });
       
       if (res.data?.data?.accessToken) {
