@@ -24,8 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // 2. Security Middlewares
 app.use(helmet({
-    crossOriginResourcePolicy: false, // Allow loading images from other origins
-    crossOriginOpenerPolicy: false,   // Allow Google Login popups to work
+    crossOriginResourcePolicy: false, 
+    crossOriginOpenerPolicy: false,
+    crossOriginEmbedderPolicy: false,
 }))
 
 // 3. Static Files
