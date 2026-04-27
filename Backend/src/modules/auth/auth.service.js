@@ -149,13 +149,14 @@ export const logout = async (tokenPayload, user, tokenString) => {
 }
 // Google login  
 export const loginWithGoogle = async (googleToken) => {
-  // Verify the Google token and get user info
-  const googleUser = await verifyGoogleToken(googleToken);
-  if (googleUser.email_verified == false) {
-    throw new BadRequestException("Invalid Google Account");
-  }
-  // Check if the user already exists in the database
-  const user = await userRepository.getOne({ email: googleUser.email });  
+  try {
+    // Verify the Google token and get user info
+    const googleUser = await verifyGoogleToken(googleToken);
+    if (googleUser.email_verified == false) {
+      throw new BadRequestException("Invalid Google Account");
+    }
+    // Check if the user already exists in the database
+    const user = await userRepository.getOne({ email: googleUser.email });  
   // If the user does not exist, create a new user account
   if (!user) {
     const newUser = await userRepository.create({
@@ -168,10 +169,12 @@ export const loginWithGoogle = async (googleToken) => {
     // Generate tokens for the new user
 return generateTokens({ sub: newUser._id, role: newUser.role , provider: newUser.provider });
   }
-  // If the user exists, generate tokens for the existing user
-  return generateTokens({ sub: user._id, role: user.role , provider: user.provider });
-
-
+    // If the user exists, generate tokens for the existing user
+    return generateTokens({ sub: user._id, role: user.role , provider: user.provider });
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    throw new BadRequestException(error.message || "Google login failed on server");
+  }
 }
 
 export const refreshTokenService= async(authorization)=>{
