@@ -1,81 +1,59 @@
 import { Router } from "express";
-import { checkUserExist } from "../user/user.service.js";
-import {
-  BadRequestException,
-  NotFoundException,
-} from "../../common/utils/error.utils.js";
 import { SYS_MESSAGE } from "../../common/constant/message.constant.js";
-import { comparePassword } from "../../common/utils/bycrypt.utils.js";
-import jwt from "jsonwebtoken";
-import { generateTokens } from "../../common/utils/jwt.utils.js";
 import { loginSchema, signupSchema } from "./auth.validation.js";
 import { isValid } from "../../../middlewares/validation.middleware.js";
 import { fileUpload } from "../../common/utils/multer.utils.js";
+import { asyncHandler } from "../../common/utils/error.utils.js";
 import { login, loginWithGoogle, logout, logoutFromAllDevices, refreshTokenService, sendOtp, singup, verifyAccount } from "./auth.service.js";
 import { isAuthenticated } from "../../../middlewares/auth.middleware.js";
+
 const router = Router();
 
+router.post("/signup", fileUpload().single("image"), isValid(signupSchema), asyncHandler(async (req, res, next) => {
+    if (req.file) {
+        req.body.profilePic = req.file.path;
+    }
+    const result = await singup(req.body);
+    return res.status(201).json({ success: true, message: SYS_MESSAGE.user.created, data: result });
+}));
 
+router.post("/login", isValid(loginSchema), asyncHandler(async (req, res, next) => {
+    const { accessToken, refreshToken } = await login(req.body);
+    return res.status(200).json({ success: true, message: "Login successful", data: { accessToken, refreshToken } });
+}));
 
-router.post("/signup",fileUpload().single("image"),isValid(signupSchema), async (req, res, next) => {
-const createdUser = await singup(req.body);
-      return res
-        .status(201)
-        .json({ message: SYS_MESSAGE.user.created, data: createdUser });
-      // Proceed with signup logic
-    })
-                  
-router.post("/login", isValid(loginSchema) , async (req, res, next) => {
+router.get("/refresh-token", asyncHandler(async (req, res, next) => {
+    const { authorization } = req.headers;
+    const { accessToken, refreshToken } = await refreshTokenService(authorization);
+    return res.status(200).json({ success: true, message: "Token refreshed successfully", data: { accessToken, refreshToken } });
+}));
 
-  const { accessToken, refreshToken } = await login(req.body);
-  // send response
-  return res.status(200).json({ message: "Login successful", data: { accessToken, refreshToken } });
-});
+router.patch("/verify-account", asyncHandler(async (req, res, next) => {
+    await verifyAccount(req.body);
+    return res.status(200).json({ success: true, message: "Account verified successfully" });
+}));
 
-router.get("/refresh-token", async (req, res, next) => {
-    const { authorization } = req.headers; // refresh
+router.post("/send-otp", asyncHandler(async (req, res, next) => {
+    await sendOtp(req.body);
+    return res.status(200).json({ success: true, message: "OTP sent successfully" });
+}));
 
- const {accessToken , refreshToken} = await refreshTokenService(authorization)
-  // send response
-  return res.status(200).json({ message: "Token refreshed successfully", data: { accessToken, refreshToken } });
+router.patch("/logout-all-devices", isAuthenticated, asyncHandler(async (req, res, next) => {
+    await logoutFromAllDevices(req.user);
+    return res.status(200).json({ success: true, message: "Logged out from all devices successfully" }); 
+}));
 
-});
+router.post("/logout", isAuthenticated, asyncHandler(async (req, res, next) => {
+    const { authorization } = req.headers;
+    const token = authorization?.startsWith("Bearer ") ? authorization.split(" ")[1] : authorization;
+    await logout(req.payload, req.user, token);
+    return res.status(200).json({ success: true, message: "Logged out successfully" }); 
+}));
 
-router.patch("/verify-account", async (req, res, next) => {
-await verifyAccount(req.body).then(() => {
-  return res.status(200).json({ message: "Account verified successfully" });
-})
-.catch((error) => {
-  return res
-    .status(400)
-    .json({ message: "Account verification failed", error: error.message });
-});
-})
-
-router.post("/send-otp", async (req, res, next) => {
-await sendOtp(req.body).then(() => {
-  return res.status(200).json({ message: "OTP sent successfully" })}).catch((error) => {
-    return res
-      .status(400)
-      .json({ message: "Failed to send OTP", error: error.message });
-  })})
-
-  router.patch("/logout-all-devices", isAuthenticated, async (req, res, next) => {
-  await logoutFromAllDevices(req.user);
-  return res.status(200).json({ message: "Logged out from all devices successfully" }); 
-  })
-
-    router.post("/logout", isAuthenticated, async (req, res, next) => {
-  const {authorization} = req.headers;
-  const token = authorization?.startsWith("Bearer ") ? authorization.split(" ")[1] : authorization;
-  await logout(req.payload, req.user, token);
-  return res.status(200).json({ message: "Logged out successfully" }); 
-  })
-
-  router.post("/login-with-google", async (req, res, next) => {
+router.post("/login-with-google", asyncHandler(async (req, res, next) => {
     const { googleToken } = req.body;
-    // Implement Google login logic here
-   const {accessToken , refreshToken } = await loginWithGoogle(googleToken);
-    return res.status(200).json({ message: "Google login successful", data: { accessToken, refreshToken } });
-  });
+    const { accessToken, refreshToken } = await loginWithGoogle(googleToken);
+    return res.status(200).json({ success: true, message: "Google login successful", data: { accessToken, refreshToken } });
+}));
+
 export default router;

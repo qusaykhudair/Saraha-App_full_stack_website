@@ -21,3 +21,9 @@ export class ConflictException extends Error {
         super(message , { cause: 400 });
    
     }   }
+
+export const asyncHandler = (fn) => {
+    return (req, res, next) => {
+        fn(req, res, next).catch(next);
+    };
+};

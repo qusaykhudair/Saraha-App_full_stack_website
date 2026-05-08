@@ -58,6 +58,10 @@ export const login = async (body) => {
       if (!userExist) {
         throw new NotFoundException(SYS_MESSAGE.user.notFound);
       }
+
+      if (!userExist.isEmailVarified) {
+        throw new BadRequestException("Please verify your email first.");
+      }
     
       // compare password
       const match = await comparePassword(body.password, userExist?.password||"DefaultPassword");
