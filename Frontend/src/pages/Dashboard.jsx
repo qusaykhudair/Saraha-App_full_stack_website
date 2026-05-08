@@ -46,7 +46,7 @@ const Dashboard = () => {
     if (!path.startsWith('/')) normalizedPath = '/' + path;
     const apiBaseUrl = import.meta.env.VITE_API_URL || '';
     const baseUrl = apiBaseUrl.replace('/api', '') || window.location.origin;
-    return `${baseUrl}${normalizedPath}`;
+    return `${baseUrl}/uploads${normalizedPath}`;
   };
 
   return (

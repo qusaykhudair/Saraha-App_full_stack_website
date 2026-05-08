@@ -11,7 +11,9 @@ const router = Router();
 
 router.post("/signup", fileUpload().single("image"), isValid(signupSchema), asyncHandler(async (req, res, next) => {
     if (req.file) {
-        req.body.profilePic = req.file.path;
+        const fullPath = req.file.path;
+        const parts = fullPath.split('uploads');
+        req.body.profilePic = parts[parts.length - 1].replace(/\\/g, '/');
     }
     const result = await singup(req.body);
     return res.status(201).json({ success: true, message: "OTP sent successfully. Please verify your email.", data: result });
