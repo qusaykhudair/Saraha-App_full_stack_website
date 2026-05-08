@@ -7,15 +7,24 @@ import path from "node:path";
 import { connectDB } from "./DB/connection.js";
 import {authRouter, messageRouter, userRouter} from "./modules/index.js";
 
-import { connectRedis } from "./DB/models/redis.connection.js";
+import { connectRedis, redisClient } from "./DB/models/redis.connection.js";
 import rateLimit from "express-rate-limit";
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Connect to MongoDB
-connectDB();
-// Connect to Redis
-connectRedis();
+// Middleware to ensure DB and Redis are connected before handling requests
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        // Redis connection is usually handled once, but we can ensure it's triggered
+        if (!redisClient.isOpen) {
+            await redisClient.connect().catch(() => {}); 
+        }
+        next();
+    } catch (err) {
+        res.status(500).json({ success: false, error: "Database connection failed" });
+    }
+});
 
 // 1. Core Middlewares (Must be at the TOP for Vercel)
 app.use(cors()); // Enable CORS for all origins
