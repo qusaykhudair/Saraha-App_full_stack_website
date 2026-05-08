@@ -116,9 +116,15 @@ const Dashboard = () => {
                          <a key={idx} href={getFullImageUrl(file.path || file)} target="_blank" rel="noreferrer" style={{ display: 'inline-block', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--card-border)' }}>
                             <img 
                               src={getFullImageUrl(file.path || file)} 
-                              alt={`attachment-${idx}`} 
-                              style={{ width: '100px', height: '100px', objectFit: 'cover', display: 'block' }} 
-                              onError={(e) => { e.target.style.display = 'none'; }}
+                              alt={`Attachment ${idx + 1}`} 
+                              style={{ 
+                                width: '150px', 
+                                height: 'auto', 
+                                minHeight: '100px',
+                                objectFit: 'contain', 
+                                display: 'block',
+                                background: 'rgba(0,0,0,0.2)' 
+                              }} 
                             />
                          </a>
                        ))}
