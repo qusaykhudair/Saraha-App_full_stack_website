@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { Mail, ShieldCheck, Globe, Send, Share2, Info } from 'lucide-react';
+=======
+import { Facebook, Twitter, Instagram, Github, Mail, ShieldCheck } from 'lucide-react';
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
 
 const Footer = () => {
   return (
@@ -13,10 +17,17 @@ const Footer = () => {
               The most trusted platform for anonymous feedback. Share your link and hear what others think about you honestly.
             </p>
             <div className="social-icons">
+<<<<<<< HEAD
               <a href="#" className="social-btn"><Globe size={20} /></a>
               <a href="#" className="social-btn"><Send size={20} /></a>
               <a href="#" className="social-btn"><Share2 size={20} /></a>
               <a href="#" className="social-btn"><Mail size={20} /></a>
+=======
+              <a href="#" className="social-btn"><Facebook size={20} /></a>
+              <a href="#" className="social-btn"><Twitter size={20} /></a>
+              <a href="#" className="social-btn"><Instagram size={20} /></a>
+              <a href="#" className="social-btn"><Github size={20} /></a>
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
             </div>
           </div>
 

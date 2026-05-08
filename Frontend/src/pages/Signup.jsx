@@ -55,6 +55,7 @@ const Signup = () => {
     } catch (error) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
        const msg = error.response?.data?.error || error.response?.data?.message || 'Signup failed';
        toast.error(msg);
 =======
@@ -63,6 +64,10 @@ const Signup = () => {
 =======
        toast.error(error.response?.data?.error || error.response?.data?.message || 'Error occurred during signup.');
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+       const msg = error.response?.data?.error || error.response?.data?.message || 'Signup failed';
+       toast.error(msg);
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
     } finally {
       setLoading(false);
     }
@@ -71,6 +76,9 @@ const Signup = () => {
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
     <div className="container" style={{ display: 'flex', justifyContent: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}>
       <div className="card" style={{ width: '100%', maxWidth: '500px' }}>
         <h2 style={{ marginBottom: '0.5rem', textAlign: 'center' }}>Create Account</h2>
@@ -134,6 +142,7 @@ const Signup = () => {
             <label>Email Address</label>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="input-container">
               <Mail className="field-icon" size={18} />
               <input
@@ -155,6 +164,15 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+            <div className="input-container">
+              <Mail className="field-icon" size={18} />
+              <input
+                type="email"
+                name="email"
+                className="input-field input-with-icon"
+                placeholder="email@example.com"
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -173,6 +191,7 @@ const Signup = () => {
               <UploadCloud size={18} color="var(--primary-color)" />
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                 {formData.image ? formData.image.name : 'Select image'}
+<<<<<<< HEAD
               </span>
               <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
 =======
@@ -200,11 +219,16 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+              </span>
+              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
             </label>
           </div>
 
           <div className="form-group">
             <label>Password</label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <div className="input-container">
@@ -232,10 +256,20 @@ const Signup = () => {
                 className="glass-input"
                 placeholder="Create a password"
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+            <div className="input-container">
+              <Lock className="field-icon" size={18} />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                className="input-field input-with-icon"
+                placeholder="Password"
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
@@ -251,6 +285,9 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
@@ -258,6 +295,7 @@ const Signup = () => {
 
           <div className="form-group">
             <label>Confirm Password</label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <div className="input-container">
@@ -281,10 +319,20 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+            <div className="input-container">
+              <Lock className="field-icon" size={18} />
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                className="input-field input-with-icon"
+                placeholder="Confirm"
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
               />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
@@ -300,6 +348,9 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+              <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
@@ -307,6 +358,9 @@ const Signup = () => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
           <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
@@ -314,6 +368,7 @@ const Signup = () => {
 
         <p style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.9rem' }}>
           Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: '600' }}>Login</Link>
+<<<<<<< HEAD
 =======
           <div className="form-group">
             <label>Gender</label>
@@ -348,6 +403,8 @@ const Signup = () => {
         <p className="text-center" style={{ marginTop: '1.5rem' }}>
           Already have an account? <Link to="/login" className="text-primary" style={{ fontWeight: '600' }}>Log In</Link>
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+>>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
         </p>
       </div>
     </div>
