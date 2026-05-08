@@ -2,13 +2,14 @@ import nodemailer from "nodemailer";
 
 export const sendEmail = async ({ to, subject, html }) => {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        console.error("❌ EMAIL_USER or EMAIL_PASS environment variables are missing!");
-        return;
+        throw new Error("EMAIL_USER or EMAIL_PASS environment variables are missing in Vercel settings!");
     }
 
     // Create a nodemailer transporter
     const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
