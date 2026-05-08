@@ -24,13 +24,12 @@ export const sendEmail = async ({ to, subject, html }) => {
     };
 
     // Send the email
-    // try {
-    //     const info = await transporter.sendMail(mailOptions);
-    //     console.log(`✅ Email successfully sent to ${to}. MessageId: ${info.messageId}`);
-    // } catch (error) {
-    //     console.error(`❌ Failed to send email to ${to}. Error: ${error.message}`);
-    //     console.log(`[DEBUG] EMAIL_USER: ${process.env.EMAIL_USER}`);
-    //     // console.log(`[DEBUG] EMAIL_PASS: ${process.env.EMAIL_PASS ? "****" : "MISSING"}`);
-    //     console.log(`[DEVELOPMENT PROMPT] Since email failed, here is the content that was supposed to be sent:\n${html}`);
-    // }
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`✅ Email successfully sent to ${to}. MessageId: ${info.messageId}`);
+    } catch (error) {
+        console.error(`❌ Failed to send email to ${to}. Error: ${error.message}`);
+        console.log(`[DEBUG] EMAIL_USER: engqusaykhudair@gmail.com`);
+        console.log(`[DEVELOPMENT PROMPT] Since email failed, here is the content that was supposed to be sent:\n${html}`);
+    }
 };

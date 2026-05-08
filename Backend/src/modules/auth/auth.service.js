@@ -40,12 +40,10 @@ export const singup = async (body) => {
   // send otp to user email for verification
   await sendOtp(body);
 
-  // create user
-  const createdUser = await createUser(body);
-
-  await redisClient.set(email, JSON.stringify(body), { EX: 5 * 60 }); // Store user data in Redis (Caching) with a 5-minute expiration
+  // Store user data in Redis (Temporarily) until verification
+  await redisClient.set(`tempUser:${email}`, JSON.stringify(body), { EX: 10 * 60 }); 
   
-  return createdUser;
+  return { message: "OTP sent to your email. Please verify to complete registration." };
 };
 
 export const login = async (body) => {
@@ -84,17 +82,21 @@ export const verifyAccount = async (body) => {
   }
 
   // Fetch temporarily cached user data
-  let data = await redisClient.get(email);
+  let data = await redisClient.get(`tempUser:${email}`);
   if (!data) {
     throw new BadRequestException("Session expired! Please sign up again.");
   }
 
-  // Create user into database
-  await userRepository.create(JSON.parse(data));
+  const userData = JSON.parse(data);
+  userData.isEmailVerified = true; // Mark as verified
+
+  // Create user into database ONLY NOW
+  await userRepository.create(userData);
   
   // Cleanup Redis
-  await redisClient.del(email);
+  await redisClient.del(`tempUser:${email}`);
   await redisClient.del(`${email}:${otp}`);
+  await redisClient.del(`${email}:otp_value`);
   
   return true;
 }
