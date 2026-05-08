@@ -78,33 +78,6 @@ const Home = () => {
           />
         </div>
       </section>
-
-      {/* Interactive CTA */}
-      <section className="glass-panel" style={{ 
-        padding: '5rem 2rem', 
-        textAlign: 'center',
-        background: 'linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05))',
-        marginBottom: '6rem'
-      }}>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to start your journey?</h2>
-        <p className="text-secondary" style={{ marginBottom: '3rem', fontSize: '1.1rem' }}>
-          Join thousands of users who are already discovering the power of honest feedback.
-        </p>
-        <div className="flex justify-center gap-xl" style={{ flexWrap: 'wrap' }}>
-           <div className="flex flex-col items-center gap-xs">
-              <div style={{ color: 'var(--primary-color)', fontSize: '2rem', fontWeight: 'bold' }}>10k+</div>
-              <div className="text-secondary">Active Users</div>
-           </div>
-           <div className="flex flex-col items-center gap-xs">
-              <div style={{ color: 'var(--secondary-color)', fontSize: '2rem', fontWeight: 'bold' }}>50k+</div>
-              <div className="text-secondary">Messages Sent</div>
-           </div>
-           <div className="flex flex-col items-center gap-xs">
-              <div style={{ color: 'var(--success)', fontSize: '2rem', fontWeight: 'bold' }}>99%</div>
-              <div className="text-secondary">User Satisfaction</div>
-           </div>
-        </div>
-      </section>
     </div>
   );
 };

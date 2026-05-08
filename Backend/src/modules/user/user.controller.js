@@ -19,7 +19,13 @@ router.get("/", isAuthenticated, asyncHandler(async (req, res, next) => {
 
 // update profile info (userName, gender, etc)
 router.patch("/update-info", isAuthenticated, asyncHandler(async (req, res, next) => {
-    const { userName, gender, phoneNumber } = req.body;
+    let { userName, gender, phoneNumber } = req.body;
+    
+    // Encrypt phoneNumber if provided to match DB standards
+    if (phoneNumber) {
+        phoneNumber = encryption(phoneNumber);
+    }
+
     const updatedUser = await updateProfile(req.user._id, { userName, gender, phoneNumber });
     return res.status(200).json({ message: "Profile updated successfully", success: true, data: { user: updatedUser } });
 }));

@@ -172,11 +172,29 @@ const Signup = () => {
             <div className="flex gap-md">
               <label style={{ cursor: 'pointer', flex: 1 }}>
                 <input type="radio" name="gender" value={0} checked={Number(formData.gender) === 0} onChange={handleInputChange} hidden />
-                <div className={`glass-panel text-center ${Number(formData.gender) === 0 ? 'primary-gradient' : ''}`} style={{ padding: '0.7rem' }}>Male</div>
+                <div className="glass-panel text-center" style={{ 
+                  padding: '0.8rem', 
+                  transition: 'var(--transition)',
+                  background: Number(formData.gender) === 0 ? 'var(--primary-color)' : 'rgba(255,255,255,0.03)',
+                  borderColor: Number(formData.gender) === 0 ? 'var(--primary-color)' : 'var(--glass-border)',
+                  color: Number(formData.gender) === 0 ? 'white' : 'var(--text-secondary)',
+                  transform: Number(formData.gender) === 0 ? 'scale(1.05)' : 'scale(1)',
+                  fontWeight: Number(formData.gender) === 0 ? '700' : '400',
+                  boxShadow: Number(formData.gender) === 0 ? '0 4px 15px rgba(124, 77, 255, 0.4)' : 'none'
+                }}>Male</div>
               </label>
               <label style={{ cursor: 'pointer', flex: 1 }}>
                 <input type="radio" name="gender" value={1} checked={Number(formData.gender) === 1} onChange={handleInputChange} hidden />
-                <div className={`glass-panel text-center ${Number(formData.gender) === 1 ? 'primary-gradient' : ''}`} style={{ padding: '0.7rem' }}>Female</div>
+                <div className="glass-panel text-center" style={{ 
+                  padding: '0.8rem', 
+                  transition: 'var(--transition)',
+                  background: Number(formData.gender) === 1 ? 'var(--primary-color)' : 'rgba(255,255,255,0.03)',
+                  borderColor: Number(formData.gender) === 1 ? 'var(--primary-color)' : 'var(--glass-border)',
+                  color: Number(formData.gender) === 1 ? 'white' : 'var(--text-secondary)',
+                  transform: Number(formData.gender) === 1 ? 'scale(1.05)' : 'scale(1)',
+                  fontWeight: Number(formData.gender) === 1 ? '700' : '400',
+                  boxShadow: Number(formData.gender) === 1 ? '0 4px 15px rgba(124, 77, 255, 0.4)' : 'none'
+                }}>Female</div>
               </label>
             </div>
           </div>
