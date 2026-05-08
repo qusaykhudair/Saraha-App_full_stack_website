@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight } from 'react-icons/fi';
+import { AuthContext } from '../context/AuthContext';
+import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight, FiGrid } from 'react-icons/fi';
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
@@ -48,13 +51,23 @@ const Home = () => {
         </p>
 
         <div className="flex gap-md justify-center" style={{ flexWrap: 'wrap' }}>
-          <Link to="/signup" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
-            Get Started Now
-            <FiChevronRight size={20} />
-          </Link>
-          <Link to="/login" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
-            Login to Dashboard
-          </Link>
+          {user ? (
+            <Link to="/dashboard" className="btn btn-primary" style={{ padding: '1.2rem 3rem', fontSize: '1.2rem', borderRadius: '18px' }}>
+              <FiGrid size={22} />
+              Go to My Dashboard
+              <FiChevronRight size={22} />
+            </Link>
+          ) : (
+            <>
+              <Link to="/signup" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+                Get Started Now
+                <FiChevronRight size={20} />
+              </Link>
+              <Link to="/login" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+                Login to Dashboard
+              </Link>
+            </>
+          )}
         </div>
       </section>
 

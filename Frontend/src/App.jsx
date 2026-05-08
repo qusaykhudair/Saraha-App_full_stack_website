@@ -1,64 +1,60 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import React, { useContext } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 import Navbar from './components/Navbar';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
-// Pages
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import VerifyOtp from './pages/VerifyOtp';
 import Dashboard from './pages/Dashboard';
-import PublicProfile from './pages/PublicProfile';
 import Profile from './pages/Profile';
-import Footer from './components/Footer';
+import PublicProfile from './pages/PublicProfile';
+import VerifyOtp from './pages/VerifyOtp';
+import { Toaster } from 'react-hot-toast';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com';
+// Component to protect routes that only guests (logged out) should see
+const GuestRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) return null;
+  if (user) return <Navigate to="/dashboard" replace />;
+  return children;
+};
+
+// Component to protect routes that only logged-in users should see
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+};
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <Router>
-        <AuthProvider>
-          <div className="app-layout">
-            <Navbar />
-            <main className="container mt-lg">
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/verify-otp" element={<VerifyOtp />} />
-                <Route path="/u/:receiverId" element={<PublicProfile />} />
-                
-                {/* Protected Routes */}
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-            </main>
-            <Footer />
-            <Toaster position="bottom-center" />
-          </div>
-        </AuthProvider>
-      </Router>
-    </GoogleOAuthProvider>
+    <div className="app-container">
+      <Toaster position="top-right" />
+      <Navbar />
+      <main className="container main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          
+          {/* Guest Only Routes */}
+          <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+          <Route path="/signup" element={<GuestRoute><Signup /></GuestRoute>} />
+          <Route path="/verify-otp" element={<GuestRoute><VerifyOtp /></GuestRoute>} />
+          
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          
+          {/* Public Messaging Page */}
+          <Route path="/u/:receiverId" element={<PublicProfile />} />
+          
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
