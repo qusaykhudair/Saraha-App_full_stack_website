@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllMessage, getSpecificMessage, sendMessage } from "./message.service.js";
+import { getAllMessage, getSpecificMessage, sendMessage, deleteMessage } from "./message.service.js";
 import { fileUpload } from "../../common/utils/multer.utils.js";
 import { isAuthenticated } from "../../../middlewares/auth.middleware.js";
 import { asyncHandler } from "../../common/utils/error.utils.js";
