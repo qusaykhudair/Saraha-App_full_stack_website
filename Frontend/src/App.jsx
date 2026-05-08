@@ -1,64 +1,65 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import React, { useContext } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
-// Pages
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import VerifyOtp from './pages/VerifyOtp';
 import Dashboard from './pages/Dashboard';
-import PublicProfile from './pages/PublicProfile';
 import Profile from './pages/Profile';
-import Footer from './components/Footer';
+import PublicProfile from './pages/PublicProfile';
+import VerifyOtp from './pages/VerifyOtp';
+import NotFound from './pages/NotFound';
+import { AuthContext } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com';
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" />;
+  return children;
+};
+
+// New Component to prevent logged-in users from accessing Login/Signup
+const AuthRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) return null;
+  if (user) return <Navigate to="/dashboard" />;
+  return children;
+};
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <Router>
-        <AuthProvider>
-          <div className="app-layout">
-            <Navbar />
-            <main className="container mt-lg">
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/verify-otp" element={<VerifyOtp />} />
-                <Route path="/u/:receiverId" element={<PublicProfile />} />
-                
-                {/* Protected Routes */}
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-            </main>
-            <Footer />
-            <Toaster position="bottom-center" />
-          </div>
-        </AuthProvider>
-      </Router>
-    </GoogleOAuthProvider>
+    <div className="min-h-screen flex flex-col">
+      <Toaster position="top-center" />
+      <Navbar />
+      <main className="flex-grow container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
+          <Route path="/signup" element={<AuthRoute><Signup /></AuthRoute>} />
+          <Route path="/verify-otp" element={<AuthRoute><VerifyOtp /></AuthRoute>} />
+          
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/u/:receiverId" element={<PublicProfile />} />
+          
+          {/* 404 Route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
