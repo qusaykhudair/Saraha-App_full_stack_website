@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { LogIn, Mail, Lock, ArrowRight } from 'lucide-react';
+import { FiLogIn, FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -51,7 +51,7 @@ const Login = () => {
             alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem',
             boxShadow: '0 8px 20px rgba(124, 77, 255, 0.3)'
           }}>
-            <LogIn size={30} color="white" />
+            <FiLogIn size={30} color="white" />
           </div>
           <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome Back</h2>
           <p className="text-secondary">Please enter your details to sign in</p>
@@ -60,7 +60,7 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-md">
           <div className="flex flex-col gap-xs">
             <div style={{ position: 'relative' }}>
-              <Mail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <FiMail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
               <input
                 type="email"
                 name="email"
@@ -76,7 +76,7 @@ const Login = () => {
 
           <div className="flex flex-col gap-xs">
             <div style={{ position: 'relative' }}>
-              <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <FiLock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
               <input
                 type="password"
                 name="password"
@@ -94,7 +94,7 @@ const Login = () => {
             {loading ? 'Authenticating...' : (
               <>
                 Sign In
-                <ArrowRight size={18} />
+                <FiArrowRight size={18} />
               </>
             )}
           </button>

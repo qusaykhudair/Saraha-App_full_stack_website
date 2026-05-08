@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Shield, Zap, Heart, ChevronRight, UserPlus, Send } from 'lucide-react';
+import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight } from 'react-icons/fi';
 
 const Home = () => {
   return (
@@ -24,7 +24,7 @@ const Home = () => {
           alignItems: 'center',
           gap: '0.5rem'
         }}>
-          <Zap size={16} fill="white" />
+          <FiZap size={16} fill="white" />
           <span>The New Standard of Anonymous Feedback</span>
         </div>
         
@@ -50,7 +50,7 @@ const Home = () => {
         <div className="flex gap-md justify-center" style={{ flexWrap: 'wrap' }}>
           <Link to="/signup" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
             Get Started Now
-            <ChevronRight size={20} />
+            <FiChevronRight size={20} />
           </Link>
           <Link to="/login" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
             Login to Dashboard
@@ -62,17 +62,17 @@ const Home = () => {
       <section style={{ paddingBottom: '8rem' }}>
         <div className="grid grid-3">
           <FeatureCard 
-            icon={<Shield size={32} color="var(--secondary-color)" />}
+            icon={<FiShield size={32} color="var(--secondary-color)" />}
             title="100% Anonymous"
             description="Your identity is never revealed. We prioritize your privacy and safety above everything else."
           />
           <FeatureCard 
-            icon={<MessageSquare size={32} color="var(--primary-color)" />}
+            icon={<FiMessageSquare size={32} color="var(--primary-color)" />}
             title="Encrypted Messages"
             description="All messages are securely stored and encrypted. Only you have access to your personal inbox."
           />
           <FeatureCard 
-            icon={<Heart size={32} color="#ff4081" />}
+            icon={<FiHeart size={32} color="#ff4081" />}
             title="Positive Growth"
             description="Turn anonymous thoughts into constructive feedback. A platform designed for personal evolution."
           />

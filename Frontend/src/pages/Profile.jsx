@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { User, Camera, Save, Phone, Mail, ChevronRight } from 'lucide-react';
+import { FiUser, FiCamera, FiSave, FiPhone, FiMail } from 'react-icons/fi';
 
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -78,7 +78,7 @@ const Profile = () => {
                 <img src={user.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <User size={60} color="var(--text-secondary)" />
+                  <FiUser size={60} color="var(--text-secondary)" />
                 </div>
               )}
             </div>
@@ -88,7 +88,7 @@ const Profile = () => {
               borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', transition: 'var(--transition)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
             }} className="hover-glow">
-              <Camera size={20} color="white" />
+              <FiCamera size={20} color="white" />
               <input type="file" hidden accept="image/*" onChange={handleImageUpload} disabled={uploading} />
             </label>
             {uploading && (
@@ -103,11 +103,11 @@ const Profile = () => {
           
           <div style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '1rem' }}>
              <div className="flex items-center gap-sm" style={{ marginBottom: '0.8rem' }}>
-                <Mail size={16} className="text-primary" />
+                <FiMail size={16} className="text-primary" />
                 <span style={{ fontSize: '0.9rem' }}>{user?.email}</span>
              </div>
              <div className="flex items-center gap-sm">
-                <Phone size={16} className="text-primary" />
+                <FiPhone size={16} className="text-primary" />
                 <span style={{ fontSize: '0.9rem' }}>{user?.phoneNumber || 'No phone added'}</span>
              </div>
           </div>
@@ -159,7 +159,7 @@ const Profile = () => {
             <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }} disabled={loading}>
               {loading ? 'Saving Changes...' : (
                 <>
-                  <Save size={18} />
+                  <FiSave size={18} />
                   Save Profile
                 </>
               )}

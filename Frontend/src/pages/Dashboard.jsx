@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Copy, Link as LinkIcon, RefreshCcw, Image as ImageIcon, Trash2, X, Maximize2, Send, Inbox } from 'lucide-react';
+import { FiCopy, FiLink, FiRefreshCcw, FiImage, FiTrash2, FiX, FiMaximize2, FiSend, FiInbox } from 'react-icons/fi';
 import moment from 'moment';
 
 const Dashboard = () => {
@@ -75,7 +75,7 @@ const Dashboard = () => {
           onClick={() => setSelectedImage(null)}
         >
           <button style={{ position: 'absolute', top: '30px', right: '30px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', cursor: 'pointer', padding: '10px', borderRadius: '50%' }}>
-            <X size={32} />
+            <FiX size={32} />
           </button>
           <img 
             src={selectedImage} 
@@ -96,12 +96,12 @@ const Dashboard = () => {
         <div className="glass-panel flex items-center justify-between" style={{ padding: '1rem 1.5rem', width: '100%', maxWidth: '650px', gap: '1.5rem' }}>
           <div className="flex items-center gap-sm text-secondary" style={{ flex: 1, minWidth: 0 }}>
             <div className="primary-gradient" style={{ padding: '8px', borderRadius: '8px', flexShrink: 0 }}>
-               <LinkIcon size={20} color="white" />
+               <FiLink size={20} color="white" />
             </div>
             <span style={{ fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shareLink}</span>
           </div>
           <button onClick={handleCopyLink} className="btn btn-primary" style={{ flexShrink: 0 }}>
-            <Copy size={18} /> Copy Link
+            <FiCopy size={18} /> Copy Link
           </button>
         </div>
       </div>
@@ -113,7 +113,7 @@ const Dashboard = () => {
              <h3 style={{ fontSize: '1.8rem' }}>Messages ({messages.length})</h3>
           </div>
           <button onClick={fetchMessages} className="btn btn-secondary" style={{ borderRadius: '50%', width: '45px', height: '45px', padding: 0 }}>
-            <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
+            <FiRefreshCcw size={20} className={loading ? "animate-spin" : ""} />
           </button>
         </div>
 
@@ -124,7 +124,7 @@ const Dashboard = () => {
         ) : messages.length === 0 ? (
           <div className="glass-panel text-center" style={{ padding: '6rem 2rem' }}>
             <div className="primary-gradient" style={{ width: '90px', height: '90px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem', opacity: 0.8 }}>
-              <Inbox size={40} color="white" />
+              <FiInbox size={40} color="white" />
             </div>
             <h4 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>Empty Inbox</h4>
             <p className="text-secondary" style={{ fontSize: '1.1rem' }}>No messages yet. Share your link to start receiving feedback!</p>
@@ -147,13 +147,13 @@ const Dashboard = () => {
                   }}
                   className="hover-glow"
                 >
-                  <Trash2 size={20} />
+                  <FiTrash2 size={20} />
                 </button>
 
                 <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem', paddingRight: '50px' }}>
                   <div className="flex items-center gap-sm">
                      <div className="primary-gradient" style={{ width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Send size={18} color="white" />
+                        <FiSend size={18} color="white" />
                      </div>
                      <div>
                         <div style={{ fontWeight: '600', fontSize: '1.1rem' }}>Anonymous User</div>
@@ -169,7 +169,7 @@ const Dashboard = () => {
                 {msg.attachments && msg.attachments.length > 0 && (
                   <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
                     <div className="flex gap-sm items-center text-secondary" style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>
-                      <ImageIcon size={16} /> Attached Files ({msg.attachments.length})
+                      <FiImage size={16} /> Attached Files ({msg.attachments.length})
                     </div>
                     <div className="flex gap-md" style={{ flexWrap: 'wrap' }}>
                        {msg.attachments.map((file, idx) => (
@@ -189,7 +189,7 @@ const Dashboard = () => {
                               onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                             />
                             <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: '6px' }}>
-                              <Maximize2 size={14} color="white" />
+                              <FiMaximize2 size={14} color="white" />
                             </div>
                          </div>
                        ))}

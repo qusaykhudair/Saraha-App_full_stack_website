@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Send, UploadCloud, User, ShieldCheck, Info } from 'lucide-react';
+import { FiSend, FiUploadCloud, FiUser, FiShield, FiInfo } from 'react-icons/fi';
 
 const PublicProfile = () => {
   const { receiverId } = useParams();
@@ -16,7 +16,7 @@ const PublicProfile = () => {
   useEffect(() => {
     const fetchReceiver = async () => {
       try {
-        const res = await api.get(`/user?id=${receiverId}`); // Assuming backend supports id query
+        const res = await api.get(`/user?id=${receiverId}`);
         if (res.data?.data?.user) {
           setReceiver(res.data.data.user);
         }
@@ -65,7 +65,7 @@ const PublicProfile = () => {
       <div className="flex justify-center items-center animate-fade-in" style={{ minHeight: '70vh' }}>
         <div className="glass-panel text-center" style={{ padding: '4rem 2rem', width: '100%', maxWidth: '550px' }}>
           <div className="primary-gradient" style={{ width: '90px', height: '90px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
-            <ShieldCheck size={45} color="white" />
+            <FiShield size={45} color="white" />
           </div>
           <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>Sent Successfully!</h2>
           <p className="text-secondary" style={{ fontSize: '1.1rem', marginBottom: '2.5rem' }}>
@@ -94,12 +94,12 @@ const PublicProfile = () => {
                 <img src={receiver.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <User size={40} color="var(--text-secondary)" />
+                  <FiUser size={40} color="var(--text-secondary)" />
                 </div>
               )}
             </div>
             <div className="primary-gradient" style={{ position: 'absolute', bottom: 0, right: 0, padding: '6px', borderRadius: '50%', border: '3px solid var(--bg-dark)' }}>
-               <ShieldCheck size={14} color="white" />
+               <FiShield size={14} color="white" />
             </div>
           </div>
           <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Send to {receiver?.userName || 'Anonymous User'}</h2>
@@ -118,7 +118,7 @@ const PublicProfile = () => {
               style={{ resize: 'none', fontSize: '1.1rem', lineHeight: '1.6' }}
             ></textarea>
             <div className="flex items-center gap-xs text-secondary" style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
-               <Info size={14} />
+               <FiInfo size={14} />
                <span>Messages are end-to-end encrypted and 100% private.</span>
             </div>
           </div>
@@ -131,7 +131,7 @@ const PublicProfile = () => {
               transition: 'var(--transition)'
             }} className="hover-glow">
               <div className="primary-gradient" style={{ padding: '8px', borderRadius: '8px' }}>
-                <UploadCloud size={20} color="white" />
+                <FiUploadCloud size={20} color="white" />
               </div>
               <div>
                 <div style={{ fontWeight: '600' }}>Attach Files</div>
@@ -154,7 +154,7 @@ const PublicProfile = () => {
           >
             {loading ? 'Sending Securely...' : (
               <>
-                <Send size={22} />
+                <FiSend size={22} />
                 Send Anonymous Message
               </>
             )}

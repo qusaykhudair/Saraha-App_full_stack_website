@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { ShieldCheck, ArrowRight, Mail } from 'lucide-react';
+import { FiShield, FiArrowRight } from 'react-icons/fi';
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState('');
@@ -43,7 +43,7 @@ const VerifyOtp = () => {
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center', 
           marginBottom: '2rem', boxShadow: '0 8px 25px rgba(124, 77, 255, 0.4)' 
         }}>
-          <ShieldCheck size={35} color="white" />
+          <FiShield size={35} color="white" />
         </div>
 
         <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>Verify Account</h2>
@@ -70,7 +70,7 @@ const VerifyOtp = () => {
             {loading ? 'Verifying...' : (
               <>
                 Confirm Verification
-                <ArrowRight size={20} />
+                <FiArrowRight size={20} />
               </>
             )}
           </button>

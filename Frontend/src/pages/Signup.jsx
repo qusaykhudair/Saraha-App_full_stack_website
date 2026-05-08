@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { UserPlus, Mail, Lock, User, Phone, ArrowRight, Camera } from 'lucide-react';
+import { FiUserPlus, FiMail, FiLock, FiUser, FiPhone, FiArrowRight, FiCamera } from 'react-icons/fi';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -76,7 +76,7 @@ const Signup = () => {
                   <img src={preview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Camera size={32} color="var(--text-secondary)" />
+                    <FiCamera size={32} color="var(--text-secondary)" />
                   </div>
                 )}
                 <input type="file" hidden accept="image/*" onChange={handleFileChange} />
@@ -87,7 +87,7 @@ const Signup = () => {
           <div className="grid grid-2">
             <div className="flex flex-col gap-xs">
               <div style={{ position: 'relative' }}>
-                <User size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <FiUser size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input
                   type="text"
                   name="userName"
@@ -103,7 +103,7 @@ const Signup = () => {
 
             <div className="flex flex-col gap-xs">
               <div style={{ position: 'relative' }}>
-                <Phone size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <FiPhone size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input
                   type="text"
                   name="phoneNumber"
@@ -119,7 +119,7 @@ const Signup = () => {
 
           <div className="flex flex-col gap-xs">
             <div style={{ position: 'relative' }}>
-              <Mail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <FiMail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
               <input
                 type="email"
                 name="email"
@@ -136,7 +136,7 @@ const Signup = () => {
           <div className="grid grid-2">
             <div className="flex flex-col gap-xs">
               <div style={{ position: 'relative' }}>
-                <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <FiLock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input
                   type="password"
                   name="password"
@@ -152,7 +152,7 @@ const Signup = () => {
 
             <div className="flex flex-col gap-xs">
               <div style={{ position: 'relative' }}>
-                <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <FiLock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input
                   type="password"
                   name="confirmPassword"
@@ -185,7 +185,7 @@ const Signup = () => {
             {loading ? 'Creating Account...' : (
               <>
                 Create Account
-                <ArrowRight size={18} />
+                <FiArrowRight size={18} />
               </>
             )}
           </button>

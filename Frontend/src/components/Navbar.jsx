@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { MessageSquare, LogOut, User } from 'lucide-react';
+import { FiMessageSquare, FiLogOut } from 'react-icons/fi';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="container flex justify-between items-center">
         <Link to="/" className="flex items-center gap-sm" style={{ textDecoration: 'none' }}>
           <div className="primary-gradient" style={{ width: '40px', height: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(124, 77, 255, 0.4)' }}>
-            <MessageSquare size={24} color="white" />
+            <FiMessageSquare size={24} color="white" />
           </div>
           <span className="text-gradient" style={{ fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.03em' }}>SARAHA</span>
         </Link>
@@ -44,7 +44,7 @@ const Navbar = () => {
               <Link to="/dashboard" className="nav-link">Dashboard</Link>
               <Link to="/profile" className="nav-link">Profile</Link>
               <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.6rem 1.2rem', color: 'var(--error)', background: 'rgba(239, 68, 68, 0.1)' }}>
-                <LogOut size={18} />
+                <FiLogOut size={18} />
                 <span className="hide-mobile">Logout</span>
               </button>
             </>
