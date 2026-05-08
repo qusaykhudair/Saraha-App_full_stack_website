@@ -15,6 +15,7 @@ import { sendEmail } from "../../common/utils/email.utils.js";
 
 export const singup = async (body) => {
   const { email, phoneNumber } = body;
+  console.log(`[DEBUG] Signup started for email: ${email}`);
   
   const user = await checkUserExist({
     $or: [
@@ -88,7 +89,7 @@ export const verifyAccount = async (body) => {
   }
 
   const userData = JSON.parse(data);
-  userData.isEmailVerified = true; // Mark as verified
+  userData.isEmailVarified = true; // Mark as verified (matching schema typo)
 
   // Create user into database ONLY NOW
   await userRepository.create(userData);

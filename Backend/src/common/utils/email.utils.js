@@ -17,7 +17,7 @@ export const sendEmail = async ({ to, subject, html }) => {
 
     // Define the email options
     const mailOptions = {
-        from: `"Saraha App" <Admin <engqusaykhudair@gmail.com>>`,
+        from: `"Saraha App" <engqusaykhudair@gmail.com>`,
         to,
         subject,
         html,

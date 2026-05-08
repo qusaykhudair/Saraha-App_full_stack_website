@@ -33,7 +33,7 @@ const schema = new Schema(
       },
     },
     profilePic : String ,
-    isEmailVarified : { type: Boolean, default: true },
+    isEmailVarified : { type: Boolean, default: false },
     crdentialUpdateAt : { type: Date, default: Date.now() },
   },
  
