@@ -10,10 +10,7 @@ export const redisClient = createClient(
 );
 // Connect to Redis
 export function connectRedis() {
-     redisClient.connect().then(() => {
-        console.log('Connected to Redis');
-    }).catch((err) => {
-        // console.error('Error connecting to Redis:', err);
-        console.error('Error connecting to Redis check if Redis server is running and configuration is correct');
-    });
+     redisClient.connect()
+        .then(() => console.log('✅ Connected to Redis'))
+        .catch((err) => console.error('❌ Redis Connection Error:', err.message));
 }

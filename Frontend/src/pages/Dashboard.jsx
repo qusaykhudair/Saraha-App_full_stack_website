@@ -44,7 +44,9 @@ const Dashboard = () => {
     // Connect to backend uploads securely by formatting path correctly
     let normalizedPath = path;
     if (!path.startsWith('/')) normalizedPath = '/' + path;
-    return `http://localhost:3000${normalizedPath}`;
+    const apiBaseUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = apiBaseUrl.replace('/api', '') || window.location.origin;
+    return `${baseUrl}${normalizedPath}`;
   };
 
   return (

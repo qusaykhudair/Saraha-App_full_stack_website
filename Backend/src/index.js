@@ -53,8 +53,10 @@ return res.status(err.cause||500).json({ success: false, error: err.message });
     }
     return res.status(err.cause||500).json({ success: false, error: err.message});
 });
-app.listen(port , ()=> {
-    console.log("App is runing on port ", port);
-})
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log("App is running on port ", port);
+    });
+}
 
 export default app;

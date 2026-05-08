@@ -8,7 +8,8 @@ export const isAuthenticated = async(req, res, next) => {
       // get data from req
     const {authorization} = req.headers;
     const token = authorization?.startsWith("Bearer ") ? authorization.split(" ")[1] : authorization;
-    const payload = jwt.verify(token, "djdjjdsjajajajajajquiuwququququ",);
+    const secret = process.env.JWT_SECRET || "default_jwt_secret_key";
+    const payload = jwt.verify(token, secret);
     // get profile service
       const user = await getProfile({ _id: payload.sub });
       if (!user) throw new NotFoundException("user not found");
