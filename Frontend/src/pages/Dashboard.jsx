@@ -39,8 +39,8 @@ const Dashboard = () => {
 
   const getFullImageUrl = (path) => {
     if (!path) return '';
-    // If the path already has http, return it
-    if (path.startsWith('http')) return path;
+    // If the path already has http or is a Base64 string, return it
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
     // Connect to backend uploads securely by formatting path correctly
     let normalizedPath = path;
     if (!path.startsWith('/')) normalizedPath = '/' + path;

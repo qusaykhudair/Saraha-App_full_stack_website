@@ -7,13 +7,17 @@ import { asyncHandler } from "../../common/utils/error.utils.js";
 import { login, loginWithGoogle, logout, logoutFromAllDevices, refreshTokenService, sendOtp, singup, verifyAccount } from "./auth.service.js";
 import { isAuthenticated } from "../../../middlewares/auth.middleware.js";
 
+import fs from "node:fs";
+
 const router = Router();
 
 router.post("/signup", fileUpload().single("image"), isValid(signupSchema), asyncHandler(async (req, res, next) => {
     if (req.file) {
-        const fullPath = req.file.path;
-        const parts = fullPath.split('uploads');
-        req.body.profilePic = parts[parts.length - 1].replace(/\\/g, '/');
+        const fileData = fs.readFileSync(req.file.path);
+        const base64 = fileData.toString('base64');
+        req.body.profilePic = `data:${req.file.mimetype};base64,${base64}`;
+        // Delete temp file
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
     }
     const result = await singup(req.body);
     return res.status(201).json({ success: true, message: "OTP sent successfully. Please verify your email.", data: result });

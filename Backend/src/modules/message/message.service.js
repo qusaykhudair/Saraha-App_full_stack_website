@@ -2,22 +2,25 @@ import { messageRepository } from "../../DB/models/message/message.repository.js
 import { NotFoundException, BadRequestException } from "../../common/utils/error.utils.js";
 import os from "node:os";
 import path from "node:path";
+import fs from "node:fs";
 // send message anymouns
 export const sendMessage = async (content, receiverId, attachments, senderId = undefined) => {
-    // Extract relative paths for database storage to ensure they work in production
-    const paths = attachments.map((file) => {
-        const tmpDir = os.tmpdir();
-        const baseUploadsFolder = path.join(tmpDir, 'uploads');
-        // Get relative path from base uploads folder
-        let relativePath = path.relative(baseUploadsFolder, file.path);
-        // Ensure forward slashes for web URLs
-        return '/' + relativePath.replace(/\\/g, '/'); 
+    // Convert attachments to Base64 strings for Vercel persistence
+    const base64Attachments = attachments.map((file) => {
+        const fileData = fs.readFileSync(file.path);
+        const base64 = fileData.toString('base64');
+        const mimeType = file.mimetype;
+        
+        // Delete the temporary file to save space on Vercel /tmp
+        try { fs.unlinkSync(file.path); } catch (e) {}
+        
+        return `data:${mimeType};base64,${base64}`;
     });
 
     const createdMessage = await messageRepository.create({
         content,
         receiver: receiverId,
-        attachments: paths,
+        attachments: base64Attachments,
         senderId: senderId,
     });
     return createdMessage;
