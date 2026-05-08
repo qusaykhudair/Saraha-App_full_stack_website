@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Send, Instagram, Code, Mail, ShieldCheck } from 'lucide-react';
+import { Mail, ShieldCheck, Globe, Send, Share2, Info } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -13,10 +13,10 @@ const Footer = () => {
               The most trusted platform for anonymous feedback. Share your link and hear what others think about you honestly.
             </p>
             <div className="social-icons">
-              <a href="#" className="social-btn"><Facebook size={20} /></a>
+              <a href="#" className="social-btn"><Globe size={20} /></a>
               <a href="#" className="social-btn"><Send size={20} /></a>
-              <a href="#" className="social-btn"><Instagram size={20} /></a>
-              <a href="#" className="social-btn"><Code size={20} /></a>
+              <a href="#" className="social-btn"><Share2 size={20} /></a>
+              <a href="#" className="social-btn"><Mail size={20} /></a>
             </div>
           </div>
 
