@@ -135,9 +135,6 @@ const PublicProfile = () => {
                 <FiInfo size={20} />
               </div>
             </div>
-            <p className="text-secondary" style={{ fontSize: '0.9rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-               <FiShield size={14} /> Your identity will remain 100% hidden.
-            </p>
           </div>
 
           <div className="grid grid-1" style={{ gap: '1.5rem' }}>
@@ -158,7 +155,11 @@ const PublicProfile = () => {
                 )}
               </div>
             </label>
-
+<br />
+    <p className="text-secondary" style={{ fontSize: '0.9rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+               <FiShield size={14} /> Your identity will remain 100% hidden.
+            </p>
+            <br />
             <button 
               type="submit" 
               className="btn btn-primary" 

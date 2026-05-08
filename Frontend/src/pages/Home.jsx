@@ -98,26 +98,6 @@ const Home = () => {
           />
         </div>
       </section>
-
-      {/* Interactive Stats Section */}
-      <section className="glass-panel" style={{ 
-        padding: '5rem 2rem', 
-        textAlign: 'center',
-        background: 'linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05))',
-        marginBottom: '6rem',
-        borderRadius: '30px',
-        border: '1px solid var(--glass-border)'
-      }}>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', fontWeight: '800' }}>Join the Global Community</h2>
-        <p className="text-secondary" style={{ marginBottom: '3rem', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
-          Thousands of users are already discovering the power of honest feedback. Start your journey today.
-        </p>
-        <div className="flex justify-center gap-xl" style={{ flexWrap: 'wrap' }}>
-           <StatItem value="10k+" label="Active Users" color="var(--primary-color)" />
-           <StatItem value="50k+" label="Messages Sent" color="var(--secondary-color)" />
-           <StatItem value="99%" label="Satisfaction" color="var(--success)" />
-        </div>
-      </section>
     </div>
   );
 };

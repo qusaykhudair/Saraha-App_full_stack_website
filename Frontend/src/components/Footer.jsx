@@ -76,7 +76,7 @@ const Footer = () => {
              <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>End-to-end Encrypted Messaging</span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-            Development with <FiHeart size={14} color="#ff4081" fill="#ff4081" /> by <span className="text-gradient" style={{ fontWeight: '700' }}>Eng Qusay khudair</span>
+            Development by <span className="text-gradient" style={{ fontWeight: '700' }}>Eng Qusay khudair</span>
           </p>
           <p className="text-secondary" style={{ fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.6 }}>
             © {new Date().getFullYear()} Saraha App. All rights reserved.
