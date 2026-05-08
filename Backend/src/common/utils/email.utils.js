@@ -1,21 +1,20 @@
 import nodemailer from "nodemailer";
 
 export const sendEmail = async ({ to, subject, html }) => {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        console.error("❌ EMAIL_USER or EMAIL_PASS environment variables are missing!");
-        return;
-    }
-
-    // Create a nodemailer transporter
+    // Creating a more robust transporter for Gmail
     const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // Use SSL
         auth: {
             user: "engqusaykhudair@gmail.com",
-            pass: "sthl ttcu svwv kldg"
+            pass: "sthl ttcu svwv kldg" // Your App Password
+        },
+        tls: {
+            rejectUnauthorized: false // Helps in some cloud environments
         }
     });
 
-    // Define the email options
     const mailOptions = {
         from: `"Saraha App" <engqusaykhudair@gmail.com>`,
         to,
@@ -23,13 +22,13 @@ export const sendEmail = async ({ to, subject, html }) => {
         html,
     };
 
-    // Send the email
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log(`✅ Email successfully sent to ${to}. MessageId: ${info.messageId}`);
+        console.log(`✅ Email sent: ${info.messageId}`);
+        return info;
     } catch (error) {
-        console.error(`❌ Failed to send email to ${to}. Error: ${error.message}`);
-        console.log(`[DEBUG] EMAIL_USER: engqusaykhudair@gmail.com`);
-        console.log(`[DEVELOPMENT PROMPT] Since email failed, here is the content that was supposed to be sent:\n${html}`);
+        console.error("❌ Nodemailer Error:", error.message);
+        // Throw the error so the user sees it in the Frontend Toast
+        throw new Error(`Email failed: ${error.message}`);
     }
 };
