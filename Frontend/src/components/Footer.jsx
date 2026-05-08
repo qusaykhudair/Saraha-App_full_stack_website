@@ -1,38 +1,52 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaGithub , FaTelegram, FaLinkedin  } from "react-icons/fa";
-import { BsInstagram } from "react-icons/bs";
+import { Facebook, Twitter, Instagram, Github, Mail, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="footer-glass">
+    <footer className="footer">
       <div className="container">
-        <div className="footer-content">
-          <div className="footer-info">
-            <p className="footer-text">
-              Development by <span className="text-gradient font-bold">Eng Qusay khudair</span>
+        <div className="footer-grid">
+          <div>
+            <Link to="/" className="footer-logo">Saraha</Link>
+            <p style={{ color: 'var(--text-muted)', maxWidth: '300px', marginBottom: '1.5rem' }}>
+              The most trusted platform for anonymous feedback. Share your link and hear what others think about you honestly.
             </p>
-            <p className="footer-copyright text-secondary">
-              © {new Date().getFullYear()} Saraha App. All rights reserved.
-            </p>
+            <div className="social-icons">
+              <a href="#" className="social-btn"><Facebook size={20} /></a>
+              <a href="#" className="social-btn"><Twitter size={20} /></a>
+              <a href="#" className="social-btn"><Instagram size={20} /></a>
+              <a href="#" className="social-btn"><Github size={20} /></a>
+            </div>
           </div>
-          
-          <div className="social-links">
-            <Link to="https://github.com/qusaykhudair" target="_blank" rel="noreferrer" className="social-icon" title="GitHub">
-              <FaGithub size={20} />
-            </Link>
-                <Link to="https://www.facebook.com/m.qsy.khdyr" target="_blank" rel="noreferrer" className="social-icon" title="GitHub">
-              <FaFacebook size={20} />
-            </Link>
-                <Link to="https://www.instagram.com/eng.qusay.khudair?igsh=MXE4cjAyMjdnbHZqdg%3D%3D" target="_blank" rel="noreferrer" className="social-icon" title="GitHub">
-              <BsInstagram size={20} />
-            </Link>
-                <Link to="https://www.linkedin.com/in/eng-qusay-khudair-bb8303262" target="_blank" rel="noreferrer" className="social-icon" title="GitHub">
-              <FaLinkedin size={20} />
-            </Link>
-                <Link to="https://t.me/eng_Qusay_kh" target="_blank" rel="noreferrer" className="social-icon" title="GitHub">
-              <FaTelegram size={20} />
-            </Link>
+
+          <div className="footer-links">
+            <h4>Platform</h4>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/signup">Register</Link></li>
+              <li><Link to="/">Explore</Link></li>
+            </ul>
           </div>
+
+          <div className="footer-links">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="copyright">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+             <ShieldCheck size={18} className="text-primary" />
+             <span>Secure and Anonymous Messaging</span>
+          </div>
+          <p>&copy; {new Date().getFullYear()} Saraha App. All rights reserved. Created with ❤️ for honest communication.</p>
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { LogOut, MessageSquare, Menu, X, LayoutDashboard, Home, UserPlus, LogIn } from 'lucide-react';
+import { LogOut, Home, LayoutDashboard, Menu, X, LogIn, UserPlus } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -19,92 +19,72 @@ const Navbar = () => {
     if (path.startsWith('http') || path.startsWith('data:')) return path;
     const apiBaseUrl = import.meta.env.VITE_API_URL || '';
     const baseUrl = apiBaseUrl.replace('/api', '') || window.location.origin;
-    let normalizedPath = path;
-    if (!path.startsWith('/')) normalizedPath = '/' + path;
-    return `${baseUrl}/uploads${normalizedPath}`;
+    return `${baseUrl}/uploads${path.startsWith('/') ? path : '/' + path}`;
   };
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-
   return (
-    <nav className="glass-panel navbar-sticky">
-      <div className="container">
-        <div className="navbar-container">
-          {/* Logo Section */}
-          <Link to="/" className="navbar-logo" onClick={() => setIsOpen(false)}>
-            <div className="logo-box">
-              <MessageSquare size={20} color="white" />
-            </div>
-            <h1 className="text-gradient logo-text">Saraha</h1>
+    <>
+      <nav className="navbar">
+        <div className="container nav-container">
+          <Link to="/" className="nav-logo" onClick={() => setIsOpen(false)}>
+            Saraha
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="nav-desktop">
+          <div className="desktop-nav" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
             <Link to="/" className="nav-link"><Home size={18} /> Home</Link>
-            {user && (
-              <Link to="/" className="nav-link"><LayoutDashboard size={18} /> Dashboard</Link>
-            )}
-          </div>
-
-          {/* User Actions (Desktop) */}
-          <div className="nav-desktop">
             {user ? (
-              <div className="flex items-center gap-md">
-                <div className="user-badge">
-                   <img 
-                    src={getFullImageUrl(user.profilePic) || `https://ui-avatars.com/api/?name=${user.userName}&background=6366f1&color=fff`} 
-                    alt="Profile" 
-                    className="avatar-sm"
-                   />
-                   <span>{user.userName?.split(' ')[0]}</span>
+              <>
+                <Link to="/" className="nav-link"><LayoutDashboard size={18} /> Dashboard</Link>
+                <div style={{ width: '1px', height: '24px', background: '#30363d' }}></div>
+                <div className="flex items-center gap-sm">
+                  <img 
+                    src={getFullImageUrl(user.profilePic) || `https://ui-avatars.com/api/?name=${user.userName}`} 
+                    alt="avatar" 
+                    style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                  <span style={{ fontWeight: '500' }}>{user.userName}</span>
                 </div>
-                <button onClick={handleLogout} className="btn btn-primary btn-sm">
-                  <LogOut size={16} /> Logout
-                </button>
-              </div>
+                <button onClick={handleLogout} className="btn btn-secondary btn-sm">Logout</button>
+              </>
             ) : (
-              <div className="flex items-center gap-sm">
+              <>
                 <Link to="/login" className="btn btn-secondary btn-sm">Login</Link>
-                <Link to="/signup" className="btn btn-primary btn-sm">Join Now</Link>
-              </div>
+                <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
+              </>
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button className="nav-mobile-toggle" onClick={toggleMenu}>
+          <button className="btn" style={{ display: 'none', background: 'none', color: 'white' }} id="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile Dropdown Menu */}
-        <div className={`nav-mobile-menu ${isOpen ? 'active' : ''}`}>
-           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}><Home size={20} /> Home</Link>
-           {user ? (
-             <>
-               <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}><LayoutDashboard size={20} /> Dashboard</Link>
-               <div className="mobile-user-section">
-                  <div className="user-badge" style={{ marginBottom: '1rem' }}>
-                    <img 
-                      src={getFullImageUrl(user.profilePic) || `https://ui-avatars.com/api/?name=${user.userName}&background=6366f1&color=fff`} 
-                      alt="Profile" 
-                      className="avatar-md"
-                    />
-                    <span style={{ fontSize: '1.1rem' }}>{user.userName}</span>
-                  </div>
-                  <button onClick={handleLogout} className="btn btn-primary" style={{ width: '100%' }}>
-                    <LogOut size={18} /> Logout
-                  </button>
-               </div>
-             </>
-           ) : (
-             <div className="mobile-auth-buttons">
-                <Link to="/login" className="btn btn-secondary" onClick={() => setIsOpen(false)}><LogIn size={20} /> Login</Link>
-                <Link to="/signup" className="btn btn-primary" onClick={() => setIsOpen(false)}><UserPlus size={20} /> Sign Up</Link>
-             </div>
-           )}
-        </div>
+      {/* Mobile Menu */}
+      <div className={`mobile-nav ${isOpen ? 'open' : ''}`}>
+        <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link>
+        {user ? (
+          <>
+            <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
+            <button onClick={handleLogout} className="btn btn-primary" style={{ width: '100%' }}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="btn btn-secondary" onClick={() => setIsOpen(false)}>Login</Link>
+            <Link to="/signup" className="btn btn-primary" onClick={() => setIsOpen(false)}>Sign Up</Link>
+          </>
+        )}
       </div>
-    </nav>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 768px) {
+          #mobile-toggle { display: block !important; }
+        }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      `}} />
+      {/* Spacer to prevent content from hiding behind fixed navbar */}
+      <div style={{ height: 'var(--nav-height)' }}></div>
+    </>
   );
 };
 

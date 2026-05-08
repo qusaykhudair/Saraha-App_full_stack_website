@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Send, UploadCloud } from 'lucide-react';
+import { Send, UploadCloud, CheckCircle2, MessageCircle } from 'lucide-react';
 
 const PublicProfile = () => {
   const { receiverId } = useParams();
@@ -13,7 +13,6 @@ const PublicProfile = () => {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      // Backend allows max 2 attachments
       const selectedFiles = Array.from(e.target.files).slice(0, 2);
       setFiles(selectedFiles);
     }
@@ -30,10 +29,7 @@ const PublicProfile = () => {
     try {
       const data = new FormData();
       data.append('content', content);
-      
-      files.forEach((file) => {
-         data.append('attachments', file);
-      });
+      files.forEach((file) => data.append('attachments', file));
 
       await api.post(`/message/${receiverId}/anoymouns`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -50,86 +46,85 @@ const PublicProfile = () => {
 
   if (success) {
     return (
-      <div className="flex-col items-center justify-center text-center" style={{ minHeight: '60vh' }}>
-        <div className="glass-panel" style={{ padding: '4rem 2rem', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{ background: 'rgba(16, 185, 129, 0.2)', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto var(--spacing-lg)' }}>
-            <Send size={40} className="text-success" color="var(--success-color)" />
+      <div className="container animate-fade-in" style={{ display: 'flex', justifyContent: 'center', paddingTop: '6rem', paddingBottom: '6rem' }}>
+        <div className="card" style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
+          <div style={{ color: 'var(--success-color)', marginBottom: '1.5rem' }}>
+            <CheckCircle2 size={64} strokeWidth={1.5} />
           </div>
-          <h2 style={{ fontSize: '2rem', marginBottom: 'var(--spacing-md)' }}>Message Sent!</h2>
-          <p className="text-secondary" style={{ fontSize: '1.1rem', marginBottom: 'var(--spacing-xl)' }}>
-            Your honest feedback has been successfully and anonymously delivered.
+          <h2 style={{ marginBottom: '1rem' }}>Message Sent!</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
+            Your honest feedback has been successfully and anonymously delivered. They will never know who sent it.
           </p>
-          <button onClick={() => { setSuccess(false); setContent(''); setFiles([]); }} className="btn btn-primary">
-            Send Another Message
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <button onClick={() => { setSuccess(false); setContent(''); setFiles([]); }} className="btn btn-primary" style={{ width: '100%' }}>
+              Send Another Message
+            </button>
+            <Link to="/signup" className="btn btn-secondary" style={{ width: '100%' }}>
+              Get Your Own Link
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center items-center" style={{ padding: 'var(--spacing-xl) 0' }}>
-      <div className="glass-panel text-center" style={{ padding: 'var(--spacing-xl)', width: '100%', maxWidth: '600px' }}>
-        
-        <div style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto var(--spacing-lg)', fontSize: '2rem', color: 'white', fontWeight: 'bold' }}>
-          ?
+    <div className="container animate-fade-in" style={{ display: 'flex', justifyContent: 'center', paddingTop: '4rem', paddingBottom: '4rem' }}>
+      <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center' }}>
+        <div style={{ background: '#21262d', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: 'var(--primary-color)' }}>
+          <MessageCircle size={40} />
         </div>
 
-        <h2 style={{ marginBottom: 'var(--spacing-xs)' }}>Leave a secret message!</h2>
-        <p className="text-secondary" style={{ marginBottom: 'var(--spacing-lg)' }}>
-          They will never know who sent it! Feel free to be totally honest.
+        <h2 style={{ marginBottom: '0.5rem' }}>Send a Secret Message</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+          Be honest, be kind, and stay anonymous.
         </p>
 
-        <form onSubmit={handleSubmit} className="text-left">
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
+        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+          <div className="form-group">
+            <label>Your Message</label>
             <textarea
-              className="glass-input"
-              rows={5}
-              placeholder="Start typing your anonymous message here..."
+              className="input-field"
+              rows={6}
+              placeholder="What's on your mind? Don't worry, it's anonymous..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required
-              style={{ resize: 'vertical' }}
+              style={{ resize: 'none', lineHeight: '1.6' }}
             ></textarea>
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--border-radius)', border: '1px dashed var(--card-border)' }}>
-              <UploadCloud size={20} className="text-primary" />
-              <span className="text-secondary">Attach files (Max 2 images)</span>
-              <input 
-                type="file" 
-                multiple 
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ display: 'none' }}
-              />
+          <div className="form-group">
+            <label>Attachments (Optional - Max 2)</label>
+            <label style={{ 
+              display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', 
+              padding: '1rem', background: '#0d1117', borderRadius: '8px', border: '1px dashed var(--border-color)', transition: 'var(--transition)' 
+            }} className="file-label-hover">
+              <UploadCloud size={20} color="var(--primary-color)" />
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                {files.length > 0 ? `${files.length} file(s) selected` : 'Click to attach images'}
+              </span>
+              <input type="file" multiple accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
             </label>
-            {files.length > 0 && (
-              <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--success-color)' }}>
-                {files.length} file(s) selected
-              </div>
-            )}
           </div>
 
           <button 
             type="submit" 
             className="btn btn-primary" 
-            style={{ width: '100%', padding: '1rem', justifyContent: 'center', fontSize: '1.1rem' }}
+            style={{ width: '100%', height: '55px', marginTop: '1rem', fontSize: '1.05rem' }}
             disabled={loading}
           >
-            {loading ? <span className="animate-spin" style={{ display: 'inline-block', width: '20px', height: '20px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></span> : (
+            {loading ? 'Sending...' : (
               <>
-                <Send size={20} />
-                Send Message Securely
+                <Send size={18} /> Send Message
               </>
             )}
           </button>
         </form>
 
-        <p className="text-secondary" style={{ marginTop: 'var(--spacing-lg)', fontSize: '0.9rem' }}>
-          Want to receive your own anonymous messages? <a href="/signup" className="text-primary">Create an account</a>
-        </p>
+        <style dangerouslySetInnerHTML={{ __html: `
+          .file-label-hover:hover { border-color: var(--primary-color); background: rgba(88, 101, 242, 0.05); }
+        `}} />
       </div>
     </div>
   );
