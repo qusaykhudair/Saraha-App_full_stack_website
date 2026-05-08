@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { User, Mail, Lock, UploadCloud, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, UploadCloud, Eye, EyeOff, ChevronRight } from 'lucide-react';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -77,6 +77,7 @@ const Signup = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
     <div className="container" style={{ display: 'flex', justifyContent: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}>
@@ -135,10 +136,44 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+    <div className="flex justify-center items-center animate-fade-in" style={{ padding: '2rem 1rem' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '550px', padding: 'var(--spacing-xl)' }}>
+        <div className="text-center" style={{ marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>Get Started</h2>
+          <p className="text-secondary">Create your anonymous profile in seconds</p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="mobile-grid">
+            <div className="form-group">
+              <label>Username</label>
+              <div className="input-wrapper">
+                <User className="input-icon" size={18} />
+                <input
+                  type="text"
+                  name="userName"
+                  className="glass-input"
+                  placeholder="LuckyCat"
+                  value={formData.userName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Gender</label>
+              <select name="gender" className="glass-input" style={{ paddingLeft: '1rem' }} value={formData.gender} onChange={handleChange}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
             </div>
           </div>
 
           <div className="form-group">
+<<<<<<< HEAD
             <label>Email Address</label>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,12 +188,16 @@ const Signup = () => {
 =======
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+            <label>Email</label>
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
             <div className="input-wrapper">
-              <Mail className="input-icon" size={20} />
+              <Mail className="input-icon" size={18} />
               <input
                 type="email"
                 name="email"
                 className="glass-input"
+<<<<<<< HEAD
                 placeholder="name@example.com"
 <<<<<<< HEAD
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
@@ -173,6 +212,9 @@ const Signup = () => {
                 className="input-field input-with-icon"
                 placeholder="email@example.com"
 >>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
+=======
+                placeholder="hello@example.com"
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -180,6 +222,7 @@ const Signup = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
           <div className="form-group">
@@ -198,16 +241,18 @@ const Signup = () => {
 =======
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
           {/* Styled Profile Picture Input */}
+=======
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
           <div className="form-group">
-            <label>Profile Picture (Optional)</label>
+            <label>Profile Picture</label>
             <label style={{ 
               display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', 
-              padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--border-radius)', 
-              border: '1px dashed var(--card-border)', transition: 'all 0.3s' 
+              padding: '0.8rem 1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', 
+              border: '1px dashed var(--card-border)', transition: 'var(--transition)' 
             }} className="file-input-label">
               <UploadCloud size={20} className="text-primary" />
-              <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-                {formData.image ? formData.image.name : 'Click to upload profile picture'}
+              <span className="text-secondary" style={{ fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {formData.image ? formData.image.name : 'Upload your avatar'}
               </span>
               <input 
                 type="file" 
@@ -231,6 +276,7 @@ const Signup = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="input-container">
               <Lock className="field-icon" size={18} />
               <input
@@ -241,10 +287,15 @@ const Signup = () => {
 =======
             <div className="input-wrapper" style={{ position: 'relative' }}>
               <Lock className="input-icon" size={20} />
+=======
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 className="glass-input"
+<<<<<<< HEAD
                 placeholder="Create a password"
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
@@ -265,6 +316,9 @@ const Signup = () => {
                 className="input-field input-with-icon"
                 placeholder="Password"
 >>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
+=======
+                placeholder="••••••••"
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -279,7 +333,7 @@ const Signup = () => {
               <button 
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '15px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex' }}
               >
 <<<<<<< HEAD
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
@@ -298,6 +352,7 @@ const Signup = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="input-container">
               <Lock className="field-icon" size={18} />
               <input
@@ -310,10 +365,15 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
             <div className="input-wrapper" style={{ position: 'relative' }}>
               <Lock className="input-icon" size={20} />
+=======
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 className="glass-input"
+<<<<<<< HEAD
                 placeholder="Repeat password"
 <<<<<<< HEAD
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
@@ -328,6 +388,9 @@ const Signup = () => {
                 className="input-field input-with-icon"
                 placeholder="Confirm"
 >>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
+=======
+                placeholder="••••••••"
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
@@ -342,7 +405,7 @@ const Signup = () => {
               <button 
                 type="button" 
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={{ position: 'absolute', right: '15px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex' }}
               >
 <<<<<<< HEAD
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
@@ -356,6 +419,7 @@ const Signup = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -405,6 +469,19 @@ const Signup = () => {
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
 =======
 >>>>>>> 5c4f604 (feat: implement frontend pages and components for Saraha application authentication and dashboard)
+=======
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', height: '55px', marginTop: '1.5rem', gap: '0.75rem', fontSize: '1.1rem' }} disabled={loading}>
+            {loading ? <span className="animate-spin" style={{ display: 'inline-block', width: '20px', height: '20px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></span> : (
+              <>
+                Create Account <ChevronRight size={20} />
+              </>
+            )}
+          </button>
+        </form>
+
+        <p className="text-center text-secondary" style={{ marginTop: '2rem' }}>
+          Already have an account? <Link to="/login" className="text-primary" style={{ fontWeight: '600', textDecoration: 'none' }}>Log In</Link>
+>>>>>>> 8c83bf1 (feat: add Signup page, Navbar component, and global CSS styling)
         </p>
       </div>
     </div>
