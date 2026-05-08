@@ -1,8 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight } from 'react-icons/fi';
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight, FiGrid } from 'react-icons/fi';
 
 const Home = () => {
+  const { user, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // Redirect to dashboard if user is already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
+  // While loading or if user exists (during redirect), don't show home content to prevent flicker
+  if (loading || user) {
+    return (
+      <div className="flex justify-center items-center" style={{ minHeight: '80vh' }}>
+        <div className="animate-spin" style={{ width: '50px', height: '50px', border: '5px solid rgba(255,255,255,0.05)', borderTopColor: 'var(--primary-color)', borderRadius: '50%' }}></div>
+      </div>
+    );
+  }
+
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
@@ -53,7 +73,7 @@ const Home = () => {
             <FiChevronRight size={20} />
           </Link>
           <Link to="/login" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
-            Login to Dashboard
+            Login to Account
           </Link>
         </div>
       </section>
@@ -78,24 +98,52 @@ const Home = () => {
           />
         </div>
       </section>
+
+      {/* Interactive Stats Section */}
+      <section className="glass-panel" style={{ 
+        padding: '5rem 2rem', 
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05))',
+        marginBottom: '6rem',
+        borderRadius: '30px',
+        border: '1px solid var(--glass-border)'
+      }}>
+        <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', fontWeight: '800' }}>Join the Global Community</h2>
+        <p className="text-secondary" style={{ marginBottom: '3rem', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
+          Thousands of users are already discovering the power of honest feedback. Start your journey today.
+        </p>
+        <div className="flex justify-center gap-xl" style={{ flexWrap: 'wrap' }}>
+           <StatItem value="10k+" label="Active Users" color="var(--primary-color)" />
+           <StatItem value="50k+" label="Messages Sent" color="var(--secondary-color)" />
+           <StatItem value="99%" label="Satisfaction" color="var(--success)" />
+        </div>
+      </section>
     </div>
   );
 };
 
 const FeatureCard = ({ icon, title, description }) => (
-  <div className="glass-panel hover-glow" style={{ padding: '2.5rem', textAlign: 'center' }}>
+  <div className="glass-panel hover-glow" style={{ padding: '3rem 2.5rem', textAlign: 'center', borderRadius: '24px' }}>
     <div style={{ 
       background: 'rgba(255,255,255,0.03)', 
-      width: '70px', height: '70px', 
-      borderRadius: '20px', 
+      width: '80px', height: '80px', 
+      borderRadius: '22px', 
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      margin: '0 auto 1.5rem',
-      border: '1px solid var(--glass-border)'
+      margin: '0 auto 2rem',
+      border: '1px solid var(--glass-border)',
+      boxShadow: '0 8px 20px rgba(0,0,0,0.2)'
     }}>
       {icon}
     </div>
-    <h3 style={{ marginBottom: '1rem', fontSize: '1.4rem' }}>{title}</h3>
-    <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: '1.6' }}>{description}</p>
+    <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem', fontWeight: '700' }}>{title}</h3>
+    <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: '1.7' }}>{description}</p>
+  </div>
+);
+
+const StatItem = ({ value, label, color }) => (
+  <div className="flex flex-col items-center gap-xs">
+    <div style={{ color: color, fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-0.02em' }}>{value}</div>
+    <div className="text-secondary" style={{ fontWeight: '600', letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.8rem' }}>{label}</div>
   </div>
 );
 
