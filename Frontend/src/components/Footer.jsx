@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Github, Mail, ShieldCheck } from 'lucide-react';
+import { Facebook, Send, Instagram, Code, Mail, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -14,9 +14,9 @@ const Footer = () => {
             </p>
             <div className="social-icons">
               <a href="#" className="social-btn"><Facebook size={20} /></a>
-              <a href="#" className="social-btn"><Twitter size={20} /></a>
+              <a href="#" className="social-btn"><Send size={20} /></a>
               <a href="#" className="social-btn"><Instagram size={20} /></a>
-              <a href="#" className="social-btn"><Github size={20} /></a>
+              <a href="#" className="social-btn"><Code size={20} /></a>
             </div>
           </div>
 
