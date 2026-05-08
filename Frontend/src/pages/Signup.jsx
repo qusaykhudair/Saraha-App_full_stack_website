@@ -9,7 +9,7 @@ const Signup = () => {
     userName: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    rePassword: '',
     gender: 0, // 0 for Male, 1 for Female
     phoneNumber: ''
   });
@@ -32,7 +32,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.rePassword) {
       toast.error("Passwords do not match");
       return;
     }
@@ -155,11 +155,11 @@ const Signup = () => {
                 <FiLock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input
                   type="password"
-                  name="confirmPassword"
+                  name="rePassword"
                   placeholder="Confirm"
                   className="glass-input"
                   style={{ paddingLeft: '3rem' }}
-                  value={formData.confirmPassword}
+                  value={formData.rePassword}
                   onChange={handleInputChange}
                   required
                 />
