@@ -4,7 +4,7 @@ import { SYS_GENDER, SYS_ROLE } from "../../../common/constant/index.js";
 
 const schema = new Schema(
   {
-    userName: { type: String, required: true, minlength: 2, maxlength: 20 },
+    userName: { type: String, required: true, minlength: 2, maxlength: 100 },
     email: { type: String, required: true, trim: true, lowercase: true },
     provider: { type: String, enum: ["system", "google"], default: "system" },
     password: { type: String, required: function () {
