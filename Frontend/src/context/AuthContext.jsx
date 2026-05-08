@@ -8,17 +8,24 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchProfile = async () => {
+    try {
+      const res = await api.get('/user');
+      setUser(res.data.data.user);
+      return res.data.data.user;
+    } catch (error) {
+      console.error("Fetch profile failed:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     const initAuth = async () => {
       const token = localStorage.getItem('accessToken');
       if (token) {
         try {
-          // Fetch full profile info from backend to get latest data (userName, profilePic, etc)
-          const res = await api.get('/user');
-          setUser(res.data.data.user);
+          await fetchProfile();
         } catch (error) {
-          console.error("Auth init failed:", error);
-          // If profile fetch fails but token exists, try decoding as fallback
           try {
             const decoded = jwtDecode(token);
             setUser(decoded);
@@ -34,18 +41,13 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  const loginContext = (accessToken, refreshToken) => {
+  const loginContext = async (accessToken, refreshToken) => {
     localStorage.setItem('accessToken', accessToken);
     if(refreshToken) {
         localStorage.setItem('refreshToken', refreshToken);
     }
-    // After login, fetch full profile to ensure state has all fields
-    api.get('/user').then(res => {
-        setUser(res.data.data.user);
-    }).catch(() => {
-        const decoded = jwtDecode(accessToken);
-        setUser(decoded);
-    });
+    // Wait for profile fetch to ensure state is ready before redirection
+    return await fetchProfile();
   };
 
   const logoutContext = () => {

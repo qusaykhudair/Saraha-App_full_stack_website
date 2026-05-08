@@ -21,7 +21,7 @@ const Login = () => {
     setLoading(true);
     try {
       const res = await api.post('/auth/login', formData);
-      loginContext(res.data.data.accessToken, res.data.data.refreshToken);
+      await loginContext(res.data.data.accessToken, res.data.data.refreshToken);
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (error) {
@@ -34,7 +34,7 @@ const Login = () => {
   const handleGoogleSuccess = async (response) => {
     try {
       const res = await api.post('/auth/login-with-google', { googleToken: response.credential });
-      loginContext(res.data.data.accessToken, res.data.data.refreshToken);
+      await loginContext(res.data.data.accessToken, res.data.data.refreshToken);
       toast.success('Logged in with Google!');
       navigate('/dashboard');
     } catch (error) {

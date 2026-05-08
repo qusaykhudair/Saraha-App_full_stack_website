@@ -106,7 +106,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', marginTop: '3rem' }}>
         <div className="flex justify-between items-center mb-xl">
           <div className="flex items-center gap-sm">
              <div className="primary-gradient" style={{ width: '12px', height: '12px', borderRadius: '50%' }}></div>
