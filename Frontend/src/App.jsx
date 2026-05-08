@@ -1,74 +1,65 @@
-import React, { useContext } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+// Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
-import PublicProfile from './pages/PublicProfile';
 import VerifyOtp from './pages/VerifyOtp';
-import { AuthContext } from './context/AuthContext';
-import { Toaster } from 'react-hot-toast';
+import Dashboard from './pages/Dashboard';
+import PublicProfile from './pages/PublicProfile';
+import Profile from './pages/Profile';
+import Footer from './components/Footer';
 
-const App = () => {
-  const { user, loading } = useContext(AuthContext);
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com';
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center" style={{ minHeight: '100vh' }}>
-        <div className="animate-spin" style={{ width: '50px', height: '50px', border: '5px solid rgba(255,255,255,0.05)', borderTopColor: 'var(--primary-color)', borderRadius: '50%' }}></div>
-      </div>
-    );
-  }
-
-  // Component to protect routes from unauthenticated users
-  const ProtectedRoute = ({ children }) => {
-    if (!user) return <Navigate to="/login" />;
-    return children;
-  };
-
-  // Component to protect routes from authenticated users (Guest only)
-  const GuestRoute = ({ children }) => {
-    if (user) return <Navigate to="/dashboard" />;
-    return children;
-  };
-
+function App() {
   return (
-    <div className="app-container">
-      <Toaster position="top-right" toastOptions={{
-        style: { background: '#1e293b', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }
-      }} />
-      <Navbar />
-      <main className="container main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          
-          <Route path="/login" element={
-            <GuestRoute><Login /></GuestRoute>
-          } />
-          <Route path="/signup" element={
-            <GuestRoute><Signup /></GuestRoute>
-          } />
-          <Route path="/verify-otp" element={
-            <GuestRoute><VerifyOtp /></GuestRoute>
-          } />
-          
-          <Route path="/dashboard" element={
-            <ProtectedRoute><Dashboard /></ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute><Profile /></ProtectedRoute>
-          } />
-          
-          <Route path="/u/:receiverId" element={<PublicProfile />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <Router>
+        <AuthProvider>
+          <div className="app-layout">
+            <Navbar />
+            <main className="container mt-lg">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/verify-otp" element={<VerifyOtp />} />
+                <Route path="/u/:receiverId" element={<PublicProfile />} />
+                
+                {/* Protected Routes */}
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  } 
+                />
+              </Routes>
+            </main>
+            <Footer />
+            <Toaster position="bottom-center" />
+          </div>
+        </AuthProvider>
+      </Router>
+    </GoogleOAuthProvider>
   );
-};
+}
 
 export default App;
