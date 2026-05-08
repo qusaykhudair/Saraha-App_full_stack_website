@@ -22,7 +22,8 @@ const Dashboard = () => {
         setMessages(res.data.data.messages);
       }
     } catch (error) {
-       toast.error('Failed to load messages');
+       const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to load messages';
+       toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
