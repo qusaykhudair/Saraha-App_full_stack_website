@@ -1,54 +1,47 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { AuthContext } from '../context/AuthContext';
-import { GoogleLogin } from '@react-oauth/google';
+import { UserPlus, Mail, Lock, User, Phone, ArrowRight, Camera } from 'lucide-react';
 
 const Signup = () => {
-  const navigate = useNavigate();
-  const { loginContext } = useContext(AuthContext);
-  
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
-    phoneNumber: '',
     password: '',
-    rePassword: '',
+    confirmPassword: '',
+    gender: 0, // 0 for Male, 1 for Female
+    phoneNumber: ''
   });
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    
-    if (formData.password !== formData.rePassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
-      setLoading(false);
       return;
     }
 
+    setLoading(true);
     try {
       const data = new FormData();
-      data.append('userName', formData.userName);
-      data.append('email', formData.email);
-      data.append('phoneNumber', formData.phoneNumber);
-      data.append('password', formData.password);
-      data.append('rePassword', formData.rePassword);
-      if (image) {
-        data.append('image', image);
-      }
+      Object.keys(formData).forEach(key => data.append(key, formData[key]));
+      if (image) data.append('image', image);
 
       const res = await api.post('/auth/signup', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -57,142 +50,150 @@ const Signup = () => {
       toast.success(res.data.message || 'OTP sent! Please check your email to verify your account.');
       navigate('/verify-otp', { state: { email: formData.email } });
     } catch (error) {
-       toast.error(error.response?.data?.error || error.response?.data?.message || 'Error occurred during signup. Please check validation rules.');
+       toast.error(error.response?.data?.error || error.response?.data?.message || 'Error occurred during signup.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center" style={{ padding: 'var(--spacing-xl) 0' }}>
-      <div className="glass-panel text-center" style={{ padding: 'var(--spacing-xl)', width: '100%', maxWidth: '550px' }}>
-        <h2 className="text-gradient" style={{ marginBottom: 'var(--spacing-md)' }}>Create an Account</h2>
-        <p className="text-secondary" style={{ marginBottom: 'var(--spacing-lg)' }}>Join Saraha and start receiving honest feedback.</p>
-        
-        <form onSubmit={handleSubmit} className="flex-col gap-md text-left">
-          <div>
-            <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Username</label>
-            <input 
-              type="text" 
-              name="userName"
-              className="glass-input" 
-              placeholder="e.g., johndoe"
-              value={formData.userName}
-              onChange={handleChange}
-              required 
-            />
+    <div className="flex justify-center items-center animate-fade-in" style={{ padding: '3rem 0' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '550px', padding: '3rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>Create Account</h2>
+          <p className="text-secondary">Join SARAHA and start receiving feedback</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-md">
+          {/* Avatar Upload */}
+          <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+             <label style={{ 
+               display: 'inline-block', position: 'relative', 
+               cursor: 'pointer', width: '100px', height: '100px',
+               borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--primary-color)' 
+             }}>
+                {preview ? (
+                  <img src={preview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Camera size={32} color="var(--text-secondary)" />
+                  </div>
+                )}
+                <input type="file" hidden accept="image/*" onChange={handleFileChange} />
+             </label>
+             <p className="text-secondary" style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>Upload Profile Picture</p>
           </div>
 
-          <div style={{ marginTop: 'var(--spacing-md)' }}>
-            <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Email Address</label>
-            <input 
-              type="email" 
-              name="email"
-              className="glass-input" 
-              placeholder="john@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
-          <div style={{ marginTop: 'var(--spacing-md)' }}>
-            <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Phone Number <span style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>(eg: 01012345678)</span></label>
-            <input 
-              type="text" 
-              name="phoneNumber"
-              className="glass-input" 
-              placeholder="01012345678"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              required 
-            />
-          </div>
-          
-          <div className="flex gap-md" style={{ marginTop: 'var(--spacing-md)' }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Password</label>
-              <input 
-                type="password" 
-                name="password"
-                className="glass-input" 
-                placeholder="Strong password"
-                value={formData.password}
-                onChange={handleChange}
-                required 
-              />
+          <div className="grid grid-2">
+            <div className="flex flex-col gap-xs">
+              <div style={{ position: 'relative' }}>
+                <User size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <input
+                  type="text"
+                  name="userName"
+                  placeholder="Full Name"
+                  className="glass-input"
+                  style={{ paddingLeft: '3rem' }}
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
             </div>
-            
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Confirm Password</label>
-              <input 
-                type="password" 
-                name="rePassword"
-                className="glass-input" 
-                placeholder="Repeat password"
-                value={formData.rePassword}
-                onChange={handleChange}
-                required 
-              />
+
+            <div className="flex flex-col gap-xs">
+              <div style={{ position: 'relative' }}>
+                <Phone size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  className="glass-input"
+                  style={{ paddingLeft: '3rem' }}
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
           </div>
 
-          <div style={{ marginTop: 'var(--spacing-md)' }}>
-            <label style={{ display: 'block', marginBottom: 'var(--spacing-sm)' }}>Profile Picture (Optional)</label>
-            <input 
-              type="file" 
-              name="image"
-              accept="image/*"
-              className="glass-input" 
-              onChange={handleFileChange}
-              style={{ padding: '0.5rem' }}
-            />
+          <div className="flex flex-col gap-xs">
+            <div style={{ position: 'relative' }}>
+              <Mail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                className="glass-input"
+                style={{ paddingLeft: '3rem' }}
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
           </div>
-          
-          <button 
-            type="submit" 
-            className="btn btn-primary" 
-            style={{ width: '100%', marginTop: 'var(--spacing-lg)', justifyContent: 'center' }}
-            disabled={loading}
-          >
-           {loading ? <span className="animate-spin" style={{ display: 'inline-block', width: '20px', height: '20px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></span> : 'Sign Up'}
+
+          <div className="grid grid-2">
+            <div className="flex flex-col gap-xs">
+              <div style={{ position: 'relative' }}>
+                <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className="glass-input"
+                  style={{ paddingLeft: '3rem' }}
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-xs">
+              <div style={{ position: 'relative' }}>
+                <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm"
+                  className="glass-input"
+                  style={{ paddingLeft: '3rem' }}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-xs">
+            <label className="text-secondary" style={{ fontSize: '0.9rem', marginBottom: '0.3rem' }}>Select Gender</label>
+            <div className="flex gap-md">
+              <label style={{ cursor: 'pointer', flex: 1 }}>
+                <input type="radio" name="gender" value={0} checked={Number(formData.gender) === 0} onChange={handleInputChange} hidden />
+                <div className={`glass-panel text-center ${Number(formData.gender) === 0 ? 'primary-gradient' : ''}`} style={{ padding: '0.7rem' }}>Male</div>
+              </label>
+              <label style={{ cursor: 'pointer', flex: 1 }}>
+                <input type="radio" name="gender" value={1} checked={Number(formData.gender) === 1} onChange={handleInputChange} hidden />
+                <div className={`glass-panel text-center ${Number(formData.gender) === 1 ? 'primary-gradient' : ''}`} style={{ padding: '0.7rem' }}>Female</div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1rem', marginTop: '1rem' }} disabled={loading}>
+            {loading ? 'Creating Account...' : (
+              <>
+                Create Account
+                <ArrowRight size={18} />
+              </>
+            )}
           </button>
         </form>
 
-        <p className="text-secondary" style={{ marginTop: 'var(--spacing-lg)' }}>
-          Already have an account? <Link to="/login" className="text-primary" style={{ fontWeight: 'bold' }}>Sign in here</Link>
+        <p style={{ marginTop: '2.5rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: '600', textDecoration: 'none' }}>Log In</Link>
         </p>
-
-        {/* Google Signup Divider */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: 'var(--spacing-lg) 0 var(--spacing-md)' }}>
-          <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--card-border)' }} />
-          <span className="text-secondary" style={{ fontSize: '0.85rem', whiteSpace: 'nowrap' }}>Or register with</span>
-          <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--card-border)' }} />
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              try {
-                const res = await api.post('/auth/login-with-google', {
-                  googleToken: credentialResponse.credential,
-                });
-                if (res.data?.data?.accessToken) {
-                  loginContext(res.data.data);
-                  toast.success('Registered & logged in with Google!');
-                  navigate('/profile');
-                }
-              } catch (error) {
-                toast.error(error.response?.data?.error || 'Google sign-up failed');
-              }
-            }}
-            onError={() => toast.error('Google Sign-Up was cancelled or failed.')}
-            shape="pill"
-            theme="filled_black"
-            text="signup_with"
-            size="large"
-          />
-        </div>
       </div>
     </div>
   );

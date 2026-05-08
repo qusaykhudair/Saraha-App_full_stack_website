@@ -15,14 +15,27 @@ export const getProfile = async(filter)=>{
     return await userRepository.getOne(filter);
 }
 
+export const updateProfile = async(userId, updateData)=>{
+    const updatedUser = await userRepository.update({_id: userId}, updateData, { new: true });
+    if (!updatedUser) throw new NotFoundException(SYS_MESSAGE.user.notFound);
+    return updatedUser;
+}
+
 export const uploadProfilePicture = async(user, file)=>{
-    const updatedUser = await userRepository.update({_id: user._id}, {profilePicture: file.path});
+    if (!file) return user;
+
+    // Convert to Base64 for Vercel persistence
+    const fileData = fs.readFileSync(file.path);
+    const base64 = `data:${file.mimetype};base64,${fileData.toString('base64')}`;
+    
+    // Update user in DB
+    const updatedUser = await userRepository.update({_id: user._id}, {profilePic: base64}, { new: true });
+    
+    // Delete temp file
+    try { fs.unlinkSync(file.path); } catch (e) {}
+
     if (!updatedUser) {
         throw new NotFoundException(SYS_MESSAGE.user.notFound);
-      }
-      // delete old profile picture if exist
-if(fs.existsSync(user.profilePicture)){ 
-      fs.unlinkSync(user.profilePicture);
     }
     return updatedUser;
 }

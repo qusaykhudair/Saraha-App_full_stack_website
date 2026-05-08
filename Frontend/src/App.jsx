@@ -13,6 +13,7 @@ import Signup from './pages/Signup';
 import VerifyOtp from './pages/VerifyOtp';
 import Dashboard from './pages/Dashboard';
 import PublicProfile from './pages/PublicProfile';
+import Profile from './pages/Profile';
 import Footer from './components/Footer';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '830397725637-jjhrace9eo0qpg1l6nhr1vebppf3e79b.apps.googleusercontent.com';
@@ -35,11 +36,18 @@ function App() {
                 
                 {/* Protected Routes */}
                 <Route 
-                  path="/profile" 
+                  path="/dashboard" 
                   element={
                     <ProtectedRoute>
                       <Dashboard />
-            
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
                     </ProtectedRoute>
                   } 
                 />
