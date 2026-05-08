@@ -38,4 +38,11 @@ router.get("/", isAuthenticated, asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: { messages } });
 }));
 
+// delete message
+router.delete("/:id", isAuthenticated, asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    await deleteMessage(id, req.user._id);
+    return res.status(200).json({ success: true, message: "Message deleted successfully" });
+}));
+
 export default router;

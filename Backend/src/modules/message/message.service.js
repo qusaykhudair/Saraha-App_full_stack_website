@@ -38,3 +38,10 @@ export const getAllMessage = async (userId) => {
   const messages = await messageRepository.getAll({ $or : [{receiver : userId }, {sender:userId }]}, {} ,{ populate:[{path:"receiver" , select:"-password -credentialsUpdateAt"}]}); // array []
   return messages;
 };
+
+// delete message
+export const deleteMessage = async (id, userId) => {
+  const deletedMessage = await messageRepository.deleteOne({ _id: id, receiver: userId });
+  if (!deletedMessage) throw new NotFoundException("Message not found or unauthorized");
+  return deletedMessage;
+};

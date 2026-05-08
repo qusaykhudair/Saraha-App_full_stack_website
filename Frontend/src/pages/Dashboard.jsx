@@ -2,15 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Copy, Link as LinkIcon, RefreshCcw, Image as ImageIcon } from 'lucide-react';
+import { Copy, Link as LinkIcon, RefreshCcw, Image as ImageIcon, Trash2, X, Maximize2 } from 'lucide-react';
 import moment from 'moment';
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null); // For Image Modal
 
-  // Determine user ID (depends on jwt payload structure, usually id or _id or sub)
   const userId = user?._id || user?.id || user?.sub || '';  
   const shareLink = `${window.location.origin}/u/${userId}`;
 
@@ -37,11 +37,21 @@ const Dashboard = () => {
     toast.success('Link copied to clipboard!');
   };
 
+  const handleDeleteMessage = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this message?")) return;
+    
+    try {
+      await api.delete(`/message/${id}`);
+      setMessages(messages.filter(m => m._id !== id));
+      toast.success('Message deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete message');
+    }
+  };
+
   const getFullImageUrl = (path) => {
     if (!path) return '';
-    // If the path already has http or is a Base64 string, return it
     if (path.startsWith('http') || path.startsWith('data:')) return path;
-    // Connect to backend uploads securely by formatting path correctly
     let normalizedPath = path;
     if (!path.startsWith('/')) normalizedPath = '/' + path;
     const apiBaseUrl = import.meta.env.VITE_API_URL || '';
@@ -50,7 +60,32 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ padding: '2rem 0' }}>
+    <div style={{ padding: '2rem 0', position: 'relative' }}>
+      {/* Image Modal (Lightbox) */}
+      {selectedImage && (
+        <div 
+          style={{ 
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
+            background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', 
+            alignItems: 'center', justifyContent: 'center', padding: '2rem' 
+          }}
+          onClick={() => setSelectedImage(null)}
+        >
+          <button 
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={40} />
+          </button>
+          <img 
+            src={selectedImage} 
+            alt="Enlarged view" 
+            style={{ maxWidth: '100%', maxHeight: '100%', borderRadius: '8px', boxShadow: '0 0 30px rgba(0,0,0,0.5)' }} 
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       <div className="flex flex-col items-center mb-xl" style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h2 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: 'var(--spacing-sm)' }}>
           Welcome Home!
@@ -93,8 +128,19 @@ const Dashboard = () => {
         ) : (
           <div className="flex flex-col gap-md">
             {messages.map((msg) => (
-              <div key={msg._id} className="glass-panel" style={{ padding: 'var(--spacing-lg)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--spacing-sm)' }}>
+              <div key={msg._id} className="glass-panel" style={{ padding: 'var(--spacing-lg)', position: 'relative' }}>
+                {/* Delete Button */}
+                <button 
+                  onClick={() => handleDeleteMessage(msg._id)}
+                  style={{ position: 'absolute', top: '15px', right: '15px', background: 'rgba(255,0,0,0.1)', border: 'none', color: '#ff4d4d', cursor: 'pointer', padding: '8px', borderRadius: '50%', transition: 'all 0.2s' }}
+                  onMouseEnter={(e) => e.target.style.background = 'rgba(255,0,0,0.2)'}
+                  onMouseLeave={(e) => e.target.style.background = 'rgba(255,0,0,0.1)'}
+                  title="Delete message"
+                >
+                  <Trash2 size={18} />
+                </button>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--spacing-sm)', paddingRight: '40px' }}>
                   <span style={{ fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>Anonymous</span>
                   <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
                     {moment(msg.createdAt).fromNow()}
@@ -112,21 +158,26 @@ const Dashboard = () => {
                     </div>
                     <div className="flex gap-sm" style={{ flexWrap: 'wrap' }}>
                        {msg.attachments.map((file, idx) => (
-                         // If file is an image, display it. Otherwise provide a link
-                         <a key={idx} href={getFullImageUrl(file.path || file)} target="_blank" rel="noreferrer" style={{ display: 'inline-block', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--card-border)' }}>
+                         <div key={idx} style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setSelectedImage(getFullImageUrl(file.path || file))}>
                             <img 
                               src={getFullImageUrl(file.path || file)} 
                               alt={`Attachment ${idx + 1}`} 
                               style={{ 
-                                width: '150px', 
-                                height: 'auto', 
-                                minHeight: '100px',
-                                objectFit: 'contain', 
+                                width: '120px', 
+                                height: '120px', 
+                                objectFit: 'cover', 
                                 display: 'block',
-                                background: 'rgba(0,0,0,0.2)' 
+                                borderRadius: '8px',
+                                border: '1px solid var(--card-border)',
+                                transition: 'transform 0.2s'
                               }} 
+                              onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                             />
-                         </a>
+                            <div style={{ position: 'absolute', bottom: '5px', right: '5px', background: 'rgba(0,0,0,0.5)', borderRadius: '50%', padding: '4px', display: 'flex' }}>
+                              <Maximize2 size={12} color="white" />
+                            </div>
+                         </div>
                        ))}
                     </div>
                   </div>
