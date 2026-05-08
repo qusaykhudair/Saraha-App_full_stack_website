@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { FiFacebook, FiGithub, FiInstagram, FiLinkedin, FiSend, FiMessageSquare, FiHeart, FiShield } from 'react-icons/fi';
 
 const Footer = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <footer style={{ 
       background: 'rgba(15, 23, 42, 0.9)', 
@@ -40,8 +43,14 @@ const Footer = () => {
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
               <li><Link to="/" className="footer-link">Home Page</Link></li>
               <li><Link to="/dashboard" className="footer-link">Dashboard</Link></li>
-              <li><Link to="/profile" className="footer-link">My Profile</Link></li>
-              <li><Link to="/login" className="footer-link">Login Account</Link></li>
+              {user ? (
+                <li><Link to="/profile" className="footer-link">Account Settings</Link></li>
+              ) : (
+                <>
+                  <li><Link to="/login" className="footer-link">Login Account</Link></li>
+                  <li><Link to="/signup" className="footer-link">Create Account</Link></li>
+                </>
+              )}
             </ul>
           </div>
 
