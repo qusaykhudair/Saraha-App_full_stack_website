@@ -4,10 +4,14 @@ import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Mail, Lock, LogIn, Globe, Eye, EyeOff } from 'lucide-react';
 =======
 import { Mail, Lock, LogIn, Chrome, Eye, EyeOff } from 'lucide-react';
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+import { Mail, Lock, LogIn, Globe, Eye, EyeOff } from 'lucide-react';
+>>>>>>> 068bb26 (solve the problem)
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -105,8 +109,12 @@ const Login = () => {
           </div>
 
           <button type="button" onClick={handleGoogleLogin} className="btn btn-secondary" style={{ width: '100%', height: '50px', background: 'white', color: '#333' }}>
+<<<<<<< HEAD
             <Chrome size={20} /> Continue with Google
 >>>>>>> 0e48a9f (feat: implement user authentication pages for signup and login with form validation and API integration)
+=======
+            <Globe size={20} /> Continue with Google
+>>>>>>> 068bb26 (solve the problem)
           </button>
         </form>
 
