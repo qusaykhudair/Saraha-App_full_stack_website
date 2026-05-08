@@ -3,10 +3,10 @@ import { SYS_MESSAGE } from "../../common/constant/message.constant.js";
 import { loginSchema, signupSchema } from "./auth.validation.js";
 import { isValid } from "../../../middlewares/validation.middleware.js";
 import { fileUpload } from "../../common/utils/multer.utils.js";
-import { asyncHandler } from "../../common/utils/error.utils.js";
+import { asyncHandler, BadRequestException } from "../../common/utils/error.utils.js";
 import { login, loginWithGoogle, logout, logoutFromAllDevices, refreshTokenService, sendOtp, singup, verifyAccount } from "./auth.service.js";
 import { isAuthenticated } from "../../../middlewares/auth.middleware.js";
-
+import { redisClient } from "../../DB/models/redis.connection.js";
 import fs from "node:fs";
 
 const router = Router();
@@ -37,6 +37,24 @@ router.get("/refresh-token", asyncHandler(async (req, res, next) => {
 router.patch("/verify-account", asyncHandler(async (req, res, next) => {
     await verifyAccount(req.body);
     return res.status(200).json({ success: true, message: "Account verified successfully. You can now login." });
+}));
+
+// Dedicated Resend OTP Route
+router.post("/resend-otp", asyncHandler(async (req, res, next) => {
+    const { email } = req.body;
+    if (!email) throw new BadRequestException("Email is required");
+
+    // Fetch temp user data to ensure session is still active
+    const data = await redisClient.get(`tempUser:${email}`);
+    if (!data) throw new BadRequestException("Session expired! Please sign up again.");
+    
+    const userData = JSON.parse(data);
+    
+    // Clear old OTP from Redis to allow immediate resend
+    await redisClient.del(`${email}:otp_value`);
+    
+    await sendOtp(userData);
+    return res.status(200).json({ success: true, message: "A new OTP has been sent to your email." });
 }));
 
 router.post("/send-otp", asyncHandler(async (req, res, next) => {
