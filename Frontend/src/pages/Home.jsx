@@ -1,3 +1,4 @@
+import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { FiMessageSquare, FiShield, FiZap, FiHeart, FiChevronRight } from 'react-icons/fi';
@@ -96,7 +97,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Interactive Stats Section - Re-added for the user */}
+      {/* Interactive Stats Section */}
       <section className="glass-panel container" style={{ 
         padding: '5rem 2rem', 
         textAlign: 'center',
@@ -133,7 +134,7 @@ const FeatureCard = ({ icon, title, description }) => (
       {icon}
     </div>
     <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem', fontWeight: '700' }}>{title}</h3>
-    <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: '1.7' }}>{description}</p>
+    <p className="text-secondary" style={{ fontSize: '1.1rem', lineHeight: '1.7' }}>{description}</p>
   </div>
 );
 
