@@ -15,9 +15,7 @@ import { sendEmail } from "../../common/utils/email.utils.js";
 
 export const singup = async (body) => {
   const { email, phoneNumber } = body;
-  console.log(`[DEBUG] Signup attempt for email: ${email}`);
   
-  // 1. Check if user exists in MongoDB
   const existingUser = await checkUserExist({
     $or: [
       { email: { $eq: email, $exists: true, $ne: null } },
@@ -26,18 +24,14 @@ export const singup = async (body) => {
   });
 
   if (existingUser) {
-    // If the user exists and is verified, they must login
     if (existingUser.isEmailVarified) {
       const field = existingUser.email === email ? "Email" : "Phone number";
       throw new ConflictException(`${field} is already registered. Please login.`);
-    } 
-    // If they exist but are NOT verified (old data), delete them to allow fresh signup
-    else {
+    } else {
       await userRepository.deleteOne({ _id: existingUser._id });
     }
   }
 
-  // 2. Prepare data
   body.role = SYS_ROLE.user;
   body.password = await hash(body.password);
   body.provider = "system";
@@ -46,20 +40,55 @@ export const singup = async (body) => {
     body.phoneNumber = encryption(body.phoneNumber);
   }
 
-  // 3. Clear any existing OTP/Temp user in Redis to avoid "OTP already sent" errors on retry
-  await redisClient.del(`${email}:otp_value`);
+  // Clear ANY existing session/OTP for this email before starting fresh
+  await redisClient.del(`active_otp:${email}`);
   await redisClient.del(`tempUser:${email}`);
 
-  // 4. Send OTP
   await sendOtp(body);
-
-  // 5. Store in Redis
   await redisClient.set(`tempUser:${email}`, JSON.stringify(body), { EX: 15 * 60 }); 
   
-  return { message: "OTP sent to your email. Please verify to complete registration." };
+  return { message: "OTP sent to your email." };
 };
 
-// ... Rest of the functions stay the same ...
+export const verifyAccount = async (body) => {
+  const { email, otp } = body;
+  
+  // 1. Get the ONLY active OTP from Redis
+  const activeOtp = await redisClient.get(`active_otp:${email}`);
+  
+  if (!activeOtp) throw new BadRequestException("OTP expired or not sent");
+  if (activeOtp !== String(otp)) throw new BadRequestException("Invalid OTP! Please use the LATEST code sent to your email.");
+
+  // 2. Fetch temp user
+  let data = await redisClient.get(`tempUser:${email}`);
+  if (!data) throw new BadRequestException("Session expired! Please sign up again.");
+
+  const userData = JSON.parse(data);
+  userData.isEmailVarified = true; 
+  await userRepository.create(userData);
+  
+  // 3. Cleanup everything
+  await redisClient.del(`tempUser:${email}`);
+  await redisClient.del(`active_otp:${email}`);
+  
+  return true;
+}
+
+export async function sendOtp(body){
+  const { email } = body;
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  
+  // Set a single key for the active OTP. Overwrites any previous one.
+  await redisClient.set(`active_otp:${email}`, String(otp), { EX: 5 * 60 }); 
+  
+  await sendEmail({
+    to: email,
+    subject: "Your OTP for Saraha App",
+    html: `<p>Your LATEST OTP is <strong>${otp}</strong>. All previous codes are now invalid.</p>`,
+  });
+}
+
+// ... rest of service stays same ...
 export const login = async (body) => {
       const { email } = body;
       const userExist = await checkUserExist({ email: { $eq: email, $exists: true, $ne: null } });
@@ -72,33 +101,6 @@ export const login = async (body) => {
       await redisClient.set(`refreshToken:${userExist._id}`, refreshToken);
       return { accessToken, refreshToken };
 }   
-
-export const verifyAccount = async (body) => {
-  const { email, otp } = body;
-  const otpDoc = await redisClient.get(`${email}:${otp}`);
-  if (!otpDoc) throw new BadRequestException("Invalid or expired OTP");
-  let data = await redisClient.get(`tempUser:${email}`);
-  if (!data) throw new BadRequestException("Session expired! Please sign up again.");
-  const userData = JSON.parse(data);
-  userData.isEmailVarified = true; 
-  await userRepository.create(userData);
-  await redisClient.del(`tempUser:${email}`);
-  await redisClient.del(`${email}:${otp}`);
-  await redisClient.del(`${email}:otp_value`);
-  return true;
-}
-
-export async function sendOtp(body){
-  const { email } = body;
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  await redisClient.set(`${email}:${otp}`, otp, { EX: 5 * 60 }); 
-  await redisClient.set(`${email}:otp_value`, otp, { EX: 5 * 60 }); 
-  await sendEmail({
-    to: email,
-    subject: "Your OTP for Saraha App",
-    html: `<p>Your OTP is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
-  });
-}
 
 export const logoutFromAllDevices = async (userId) => {
   await userRepository.update({ _id: userId }, { crdentialUpdateAt: Date.now() });

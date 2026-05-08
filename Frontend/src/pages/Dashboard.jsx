@@ -106,14 +106,31 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', marginTop: '5rem' }}>
-        <div className="flex justify-between items-center mb-xl">
+      <div style={{ maxWidth: '900px', margin: '0 auto', marginTop: '6rem' }}>
+        <div className="glass-panel" style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '1.2rem 2rem', 
+          marginBottom: '2rem',
+          borderRadius: '20px',
+          border: '1px solid var(--glass-border)',
+          background: 'rgba(255,255,255,0.02)'
+        }}>
           <div className="flex items-center gap-sm">
-             <div className="primary-gradient" style={{ width: '12px', height: '12px', borderRadius: '50%' }}></div>
-             <h3 style={{ fontSize: '1.8rem' }}>Messages ({messages.length})</h3>
+             <div className="primary-gradient" style={{ width: '12px', height: '12px', borderRadius: '50%', boxShadow: '0 0 10px var(--primary-color)' }}></div>
+             <h3 style={{ fontSize: '1.5rem', fontWeight: '700' }}>Inbox Messages ({messages.length})</h3>
           </div>
-          <button onClick={fetchMessages} className="btn btn-secondary" style={{ borderRadius: '50%', width: '45px', height: '45px', padding: 0 }}>
-            <FiRefreshCcw size={20} className={loading ? "animate-spin" : ""} />
+          <button 
+            onClick={fetchMessages} 
+            className="btn btn-secondary hover-glow" 
+            style={{ 
+              width: '40px', height: '40px', padding: 0, 
+              borderRadius: '12px', background: 'rgba(255,255,255,0.05)' 
+            }}
+            title="Refresh Messages"
+          >
+            <FiRefreshCcw size={18} className={loading ? "animate-spin" : ""} />
           </button>
         </div>
 
