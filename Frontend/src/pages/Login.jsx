@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Mail, Lock, LogIn, Chrome, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, LogIn, Globe, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -97,7 +97,7 @@ const Login = () => {
           </div>
 
           <button type="button" onClick={handleGoogleLogin} className="btn btn-secondary" style={{ width: '100%', height: '50px', background: 'white', color: '#333' }}>
-            <Chrome size={20} /> Continue with Google
+            <Globe size={20} /> Continue with Google
           </button>
         </form>
 
