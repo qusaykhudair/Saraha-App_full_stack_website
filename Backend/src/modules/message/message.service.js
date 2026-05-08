@@ -41,7 +41,10 @@ export const getAllMessage = async (userId) => {
 
 // delete message
 export const deleteMessage = async (id, userId) => {
-  const deletedMessage = await messageRepository.deleteOne({ _id: id, receiver: userId });
-  if (!deletedMessage) throw new NotFoundException("Message not found or unauthorized");
-  return deletedMessage;
+  const result = await messageRepository.deleteOne({ _id: id, receiver: userId });
+  // Check if any document was actually deleted
+  if (result.deletedCount === 0) {
+    throw new NotFoundException("Message not found or you are not authorized to delete it");
+  }
+  return true;
 };

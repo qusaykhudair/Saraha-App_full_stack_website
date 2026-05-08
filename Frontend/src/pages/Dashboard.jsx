@@ -45,7 +45,8 @@ const Dashboard = () => {
       setMessages(messages.filter(m => m._id !== id));
       toast.success('Message deleted successfully');
     } catch (error) {
-      toast.error('Failed to delete message');
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to delete message';
+      toast.error(errorMsg);
     }
   };
 
