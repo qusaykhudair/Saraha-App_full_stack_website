@@ -32,32 +32,37 @@ const Navbar = () => {
     }}>
       <div className="container flex justify-between items-center">
         <Link to="/" className="flex items-center gap-sm" style={{ textDecoration: 'none' }}>
-          <div className="primary-gradient" style={{ width: '35px', height: '35px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="primary-gradient" style={{ width: '38px', height: '38px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(124, 77, 255, 0.3)' }}>
             <FiMessageSquare size={20} color="white" />
           </div>
-          <span className="text-gradient" style={{ fontSize: '1.2rem', fontWeight: '800' }}>SARAHA</span>
+          <span className="text-gradient" style={{ fontSize: '1.3rem', fontWeight: '800' }}>SARAHA</span>
         </Link>
 
         <div className="flex gap-sm items-center">
           {user ? (
             <>
-              <Link to="/dashboard" className="nav-icon-link" title="Dashboard">
+              <Link to="/dashboard" className="nav-soft-link" title="Dashboard">
                 <FiGrid size={20} />
                 <span className="hide-mobile">Dashboard</span>
               </Link>
-              <Link to="/profile" className="nav-icon-link" title="Profile">
+              <Link to="/profile" className="nav-soft-link" title="Profile">
                 <FiUser size={20} />
                 <span className="hide-mobile">Profile</span>
               </Link>
-              <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem', minWidth: '40px', color: 'var(--error)' }}>
+              <button 
+                onClick={handleLogout} 
+                className="logout-btn-soft"
+                title="Logout"
+              >
                 <FiLogOut size={18} />
+                <span className="hide-mobile" style={{ marginLeft: '5px' }}>Logout</span>
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="nav-link" style={{ fontSize: '0.9rem' }}>Login</Link>
-              <Link to="/signup" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                Join
+              <Link to="/login" className="nav-link" style={{ fontSize: '0.9rem', marginRight: '1rem' }}>Login</Link>
+              <Link to="/signup" className="btn btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.9rem', borderRadius: '14px' }}>
+                Join Now
               </Link>
             </>
           )}
@@ -70,24 +75,50 @@ const Navbar = () => {
           font-weight: 500;
           transition: var(--transition);
         }
-        .nav-icon-link {
+        .nav-link:hover { color: var(--primary-color); }
+
+        .nav-soft-link {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.6rem;
           color: var(--text-secondary);
           text-decoration: none;
-          font-weight: 500;
-          padding: 0.5rem;
-          border-radius: 8px;
-          transition: var(--transition);
+          font-weight: 600;
+          padding: 0.6rem 1rem;
+          border-radius: 14px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          background: transparent;
         }
-        .nav-icon-link:hover {
+        .nav-soft-link:hover {
           color: var(--primary-color);
-          background: rgba(255,255,255,0.05);
+          background: rgba(124, 77, 255, 0.1);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(124, 77, 255, 0.1);
         }
+
+        .logout-btn-soft {
+          display: flex;
+          align-items: center;
+          background: rgba(239, 68, 68, 0.05);
+          color: var(--error);
+          border: 1px solid rgba(239, 68, 68, 0.1);
+          padding: 0.6rem 1.2rem;
+          border-radius: 14px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          font-family: inherit;
+        }
+        .logout-btn-soft:hover {
+          background: rgba(239, 68, 68, 0.15);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+        }
+
         @media (max-width: 640px) {
           .hide-mobile { display: none; }
-          .nav-icon-link { padding: 0.4rem; }
+          .nav-soft-link { padding: 0.6rem; border-radius: 12px; }
+          .logout-btn-soft { padding: 0.6rem; border-radius: 12px; }
         }
       `}</style>
     </nav>

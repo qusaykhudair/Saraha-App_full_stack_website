@@ -15,7 +15,7 @@ const Footer = () => {
       marginTop: '6rem'
     }}>
       <div className="container">
-        <div className="grid grid-3" style={{ marginBottom: '3rem', gap: '3rem' }}>
+        <div className="footer-grid" style={{ marginBottom: '3rem' }}>
           
           {/* Brand Section */}
           <div className="flex flex-col gap-md">
@@ -25,10 +25,10 @@ const Footer = () => {
               </div>
               <span className="text-gradient" style={{ fontSize: '1.5rem', fontWeight: '800' }}>SARAHA</span>
             </Link>
-            <p className="text-secondary" style={{ maxWidth: '300px', lineHeight: '1.7' }}>
+            <p className="text-secondary" style={{ maxWidth: '300px', lineHeight: '1.7', fontSize: '0.95rem' }}>
               The most trusted platform for anonymous and honest feedback. Connect with your friends and discover the truth.
             </p>
-            <div className="flex gap-sm">
+            <div className="flex gap-sm" style={{ flexWrap: 'wrap' }}>
               <SocialBtn href="https://www.facebook.com/m.qsy.khdyr" icon={<FiFacebook size={18} />} color="#1877F2" />
               <SocialBtn href="https://github.com/qusaykhudair" icon={<FiGithub size={18} />} color="#fff" />
               <SocialBtn href="https://www.instagram.com/eng.qusay.khudair" icon={<FiInstagram size={18} />} color="#E4405F" />
@@ -39,7 +39,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'white' }}>Quick Navigation</h4>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'white' }}>Navigation</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
               <li><Link to="/" className="footer-link">Home Page</Link></li>
               <li><Link to="/dashboard" className="footer-link">Dashboard</Link></li>
@@ -56,10 +56,10 @@ const Footer = () => {
 
           {/* Contact Section */}
           <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'white' }}>Get in Touch</h4>
-            <p className="text-secondary" style={{ marginBottom: '1rem' }}>Have questions or feedback? Contact the developer:</p>
-            <a href="mailto:engqusaykhudair@gmail.com" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'flex-start', padding: '0.8rem 1rem' }}>
-              <FiSend size={18} />
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'white' }}>Contact Dev</h4>
+            <p className="text-secondary" style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Contact the developer:</p>
+            <a href="mailto:engqusaykhudair@gmail.com" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'flex-start', padding: '0.8rem 1rem', fontSize: '0.85rem' }}>
+              <FiSend size={16} />
               engqusaykhudair@gmail.com
             </a>
           </div>
@@ -73,26 +73,34 @@ const Footer = () => {
         }}>
           <div className="flex justify-center items-center gap-xs" style={{ marginBottom: '0.8rem', color: 'var(--success)' }}>
              <FiShield size={16} />
-             <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>End-to-end Encrypted Messaging</span>
+             <span style={{ fontSize: '0.85rem', fontWeight: '500' }}>Encrypted & Secure Messaging</span>
           </div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
             Development by <span className="text-gradient" style={{ fontWeight: '700' }}>Eng Qusay khudair</span>
           </p>
-          <p className="text-secondary" style={{ fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.6 }}>
+          <p className="text-secondary" style={{ fontSize: '0.8rem', marginTop: '0.5rem', opacity: 0.5 }}>
             © {new Date().getFullYear()} Saraha App. All rights reserved.
           </p>
         </div>
       </div>
       <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 3rem;
+        }
         .footer-link {
           color: var(--text-secondary);
           text-decoration: none;
           transition: var(--transition);
-          font-size: 0.95rem;
+          font-size: 0.9rem;
         }
         .footer-link:hover {
           color: var(--primary-color);
           padding-left: 5px;
+        }
+        @media (max-width: 768px) {
+          .footer-grid { gap: 2rem; }
         }
       `}</style>
     </footer>
@@ -104,17 +112,28 @@ const SocialBtn = ({ href, icon, color }) => (
     href={href} 
     target="_blank" 
     rel="noreferrer" 
-    className="glass-panel" 
-    style={{ 
-      width: '40px', height: '40px', 
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      borderRadius: '10px', color: 'var(--text-secondary)',
-      transition: 'var(--transition)'
-    }}
+    className="social-btn-box"
+    style={{ color: 'var(--text-secondary)' }}
     onMouseEnter={(e) => { e.currentTarget.style.color = color; e.currentTarget.style.borderColor = color; }}
-    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--glass-border)'; }}
+    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
   >
     {icon}
+    <style>{`
+      .social-btn-box {
+        width: 42px; 
+        height: 42px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        border-radius: 12px; 
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: var(--transition);
+      }
+      @media (max-width: 480px) {
+        .social-btn-box { width: 38px; height: 38px; }
+      }
+    `}</style>
   </a>
 );
 
