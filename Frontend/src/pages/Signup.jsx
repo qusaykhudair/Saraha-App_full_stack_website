@@ -54,7 +54,7 @@ const Signup = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
-      toast.success(res.data.message || 'Account created! Please check your email for the OTP.');
+      toast.success(res.data.message || 'OTP sent! Please check your email to verify your account.');
       navigate('/verify-otp', { state: { email: formData.email } });
     } catch (error) {
        toast.error(error.response?.data?.error || error.response?.data?.message || 'Error occurred during signup. Please check validation rules.');

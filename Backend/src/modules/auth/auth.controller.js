@@ -14,7 +14,7 @@ router.post("/signup", fileUpload().single("image"), isValid(signupSchema), asyn
         req.body.profilePic = req.file.path;
     }
     const result = await singup(req.body);
-    return res.status(201).json({ success: true, message: SYS_MESSAGE.user.created, data: result });
+    return res.status(201).json({ success: true, message: "OTP sent successfully. Please verify your email.", data: result });
 }));
 
 router.post("/login", isValid(loginSchema), asyncHandler(async (req, res, next) => {
@@ -30,7 +30,7 @@ router.get("/refresh-token", asyncHandler(async (req, res, next) => {
 
 router.patch("/verify-account", asyncHandler(async (req, res, next) => {
     await verifyAccount(req.body);
-    return res.status(200).json({ success: true, message: "Account verified successfully" });
+    return res.status(200).json({ success: true, message: "Account verified successfully. You can now login." });
 }));
 
 router.post("/send-otp", asyncHandler(async (req, res, next) => {

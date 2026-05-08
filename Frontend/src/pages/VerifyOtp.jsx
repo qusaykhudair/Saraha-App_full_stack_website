@@ -36,7 +36,7 @@ const VerifyOtp = () => {
         otp: otp
       });
       
-      toast.success(res.data.message || 'Account verified successfully!');
+      toast.success(res.data.message || 'Account created and verified successfully!');
       navigate('/login');
     } catch (error) {
       toast.error(error.response?.data?.error || error.response?.data?.message || 'Invalid or expired OTP');
