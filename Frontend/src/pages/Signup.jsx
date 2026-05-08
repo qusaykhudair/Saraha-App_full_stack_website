@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { User, Mail, Lock, UploadCloud, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, UploadCloud, Eye, EyeOff, ChevronRight } from 'lucide-react';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -60,37 +60,49 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center" style={{ padding: '2rem 0' }}>
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '500px', padding: 'var(--spacing-xl)' }}>
-        <h2 className="text-center" style={{ marginBottom: 'var(--spacing-sm)' }}>Create Account</h2>
-        <p className="text-center text-secondary" style={{ marginBottom: 'var(--spacing-lg)' }}>Join the community for honest feedback</p>
+    <div className="flex justify-center items-center animate-fade-in" style={{ padding: '2rem 1rem' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '550px', padding: 'var(--spacing-xl)' }}>
+        <div className="text-center" style={{ marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>Get Started</h2>
+          <p className="text-secondary">Create your anonymous profile in seconds</p>
+        </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Username</label>
-            <div className="input-wrapper">
-              <User className="input-icon" size={20} />
-              <input
-                type="text"
-                name="userName"
-                className="glass-input"
-                placeholder="Enter your username"
-                value={formData.userName}
-                onChange={handleChange}
-                required
-              />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="mobile-grid">
+            <div className="form-group">
+              <label>Username</label>
+              <div className="input-wrapper">
+                <User className="input-icon" size={18} />
+                <input
+                  type="text"
+                  name="userName"
+                  className="glass-input"
+                  placeholder="LuckyCat"
+                  value={formData.userName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Gender</label>
+              <select name="gender" className="glass-input" style={{ paddingLeft: '1rem' }} value={formData.gender} onChange={handleChange}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </div>
           </div>
 
           <div className="form-group">
-            <label>Email Address</label>
+            <label>Email</label>
             <div className="input-wrapper">
-              <Mail className="input-icon" size={20} />
+              <Mail className="input-icon" size={18} />
               <input
                 type="email"
                 name="email"
                 className="glass-input"
-                placeholder="name@example.com"
+                placeholder="hello@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -98,17 +110,16 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Styled Profile Picture Input */}
           <div className="form-group">
-            <label>Profile Picture (Optional)</label>
+            <label>Profile Picture</label>
             <label style={{ 
               display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', 
-              padding: '0.75rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--border-radius)', 
-              border: '1px dashed var(--card-border)', transition: 'all 0.3s' 
+              padding: '0.8rem 1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', 
+              border: '1px dashed var(--card-border)', transition: 'var(--transition)' 
             }} className="file-input-label">
               <UploadCloud size={20} className="text-primary" />
-              <span className="text-secondary" style={{ fontSize: '0.9rem' }}>
-                {formData.image ? formData.image.name : 'Click to upload profile picture'}
+              <span className="text-secondary" style={{ fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {formData.image ? formData.image.name : 'Upload your avatar'}
               </span>
               <input 
                 type="file" 
@@ -121,13 +132,13 @@ const Signup = () => {
 
           <div className="form-group">
             <label>Password</label>
-            <div className="input-wrapper" style={{ position: 'relative' }}>
-              <Lock className="input-icon" size={20} />
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 className="glass-input"
-                placeholder="Create a password"
+                placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -135,7 +146,7 @@ const Signup = () => {
               <button 
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '15px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex' }}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -144,13 +155,13 @@ const Signup = () => {
 
           <div className="form-group">
             <label>Confirm Password</label>
-            <div className="input-wrapper" style={{ position: 'relative' }}>
-              <Lock className="input-icon" size={20} />
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 className="glass-input"
-                placeholder="Repeat password"
+                placeholder="••••••••"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
@@ -158,28 +169,24 @@ const Signup = () => {
               <button 
                 type="button" 
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={{ position: 'absolute', right: '15px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex' }}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Gender</label>
-            <select name="gender" className="glass-input" value={formData.gender} onChange={handleChange}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', height: '50px' }} disabled={loading}>
-            {loading ? <span className="animate-spin" style={{ display: 'inline-block', width: '20px', height: '20px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></span> : 'Sign Up'}
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', height: '55px', marginTop: '1.5rem', gap: '0.75rem', fontSize: '1.1rem' }} disabled={loading}>
+            {loading ? <span className="animate-spin" style={{ display: 'inline-block', width: '20px', height: '20px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></span> : (
+              <>
+                Create Account <ChevronRight size={20} />
+              </>
+            )}
           </button>
         </form>
 
-        <p className="text-center" style={{ marginTop: '1.5rem' }}>
-          Already have an account? <Link to="/login" className="text-primary" style={{ fontWeight: '600' }}>Log In</Link>
+        <p className="text-center text-secondary" style={{ marginTop: '2rem' }}>
+          Already have an account? <Link to="/login" className="text-primary" style={{ fontWeight: '600', textDecoration: 'none' }}>Log In</Link>
         </p>
       </div>
     </div>
